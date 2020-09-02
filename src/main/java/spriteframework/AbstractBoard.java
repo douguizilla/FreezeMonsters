@@ -1,8 +1,9 @@
 package spriteframework;
 
 
+import spriteframework.Player.BasePlayer;
 import spriteframework.sprite.BadSprite;
-import spriteframework.sprite.Player;
+import spaceinvaders.sprite.Player;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,7 +20,7 @@ public abstract class AbstractBoard extends JPanel {
 
     //define sprites
 //    private List<Alien> aliens;
-    protected LinkedList<Player> players;
+    protected LinkedList<BasePlayer> players;
 
     protected LinkedList<BadSprite> badSprites;
 
@@ -48,7 +49,7 @@ public abstract class AbstractBoard extends JPanel {
 
     protected abstract void update();
 
-    protected abstract void processOtherSprites(Player player, KeyEvent e);
+    protected abstract void processOtherSprites(BasePlayer player, KeyEvent e);
 
     public AbstractBoard() {
 
@@ -81,7 +82,7 @@ public abstract class AbstractBoard extends JPanel {
 
 
     protected void createPlayers() {
-        players = new LinkedList<Player>();
+        players = new LinkedList<BasePlayer>();
         players.add(createPlayer());
     }
 
@@ -89,7 +90,7 @@ public abstract class AbstractBoard extends JPanel {
         return new Player();
     }
 
-    public Player getPlayer(int i) {
+    public BasePlayer getPlayer(int i) {
         if (i >= 0 && i < players.size())
             return players.get(i);
         return null;
@@ -119,7 +120,7 @@ public abstract class AbstractBoard extends JPanel {
     }
 
     private void drawPlayers(Graphics g) {
-        for (Player player : players) {
+        for (BasePlayer player : players) {
             if (player.isVisible()) {
                 g.drawImage(player.getImage(), player.getX(), player.getY(), this);
             }
@@ -201,7 +202,6 @@ public abstract class AbstractBoard extends JPanel {
     private class GameCycle implements ActionListener {
 
         public void actionPerformed(ActionEvent e) {
-
             doGameCycle();
         }
     }
@@ -210,13 +210,13 @@ public abstract class AbstractBoard extends JPanel {
 
         @Override
         public void keyReleased(KeyEvent e) {
-            for (Player player : players)
+            for (BasePlayer player : players)
                 player.keyReleased(e);
         }
 
         @Override
         public void keyPressed(KeyEvent e) {
-            for (Player player : players) {
+            for (BasePlayer player : players) {
                 player.keyPressed(e);
 
                 processOtherSprites(player, e); // hotspot
