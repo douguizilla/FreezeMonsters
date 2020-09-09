@@ -81,28 +81,23 @@ public class Sprite {
     }
 
     public void getImageDimensions() {
-
         imageWidth = image.getWidth(null);
         imageHeight = image.getHeight(null);
     }
 
     public void setDying(boolean dying) {
-
         this.dying = dying;
     }
 
     public boolean isDying() {
-
         return this.dying;
     }
 
     public void moveX(int direction) {
-
         this.x += direction;
     }
 
     public void moveY(int direction) {
-
         this.y += direction;
     }
 }

@@ -25,7 +25,7 @@ public class Player extends BasePlayer {
                     dx = -2;
                 }
 
-                if (key == KeyEvent.VK_RIGHT) {
+                else if (key == KeyEvent.VK_RIGHT) {
 
                     dx = 2;
                 }
@@ -41,7 +41,7 @@ public class Player extends BasePlayer {
                     dx = 0;
                 }
 
-                if (key == KeyEvent.VK_RIGHT) {
+                else if (key == KeyEvent.VK_RIGHT) {
 
                     dx = 0;
                 }

@@ -18,29 +18,15 @@ public abstract class AbstractBoard extends JPanel {
 
     protected Dimension d;
 
-    //define sprites
-//    private List<Alien> aliens;
     protected LinkedList<BasePlayer> players;
 
     protected LinkedList<BadSprite> badSprites;
 
-//    private Shot shot;
-//    
-    // define global control vars   
-//    private int direction = -1;
-//    private int deaths = 0;
-
-    private int numberPlayers;  // to do - future use
     protected boolean inGame = true;
-    //    private String explImg = "src/images/explosion.png";
     protected String message = "Game Over";
 
     protected Timer timer;
 
-    // Frozen Spots
-    //  void initBoard()
-    // 
-    // HotSpots
     protected abstract void createBadSprites();
 
     protected abstract void createOtherSprites();
@@ -55,11 +41,9 @@ public abstract class AbstractBoard extends JPanel {
 
         initBoard();
         createPlayers();
-        numberPlayers = 1;
         badSprites = new LinkedList<BadSprite>();
         createBadSprites();
         createOtherSprites();
-        //        shot = new Shot();
     }
 
     private void initBoard() {
@@ -73,11 +57,9 @@ public abstract class AbstractBoard extends JPanel {
         timer.start();
 
         createPlayers();
-        numberPlayers = 1;
         badSprites = new LinkedList<BadSprite>();
         createBadSprites();
         createOtherSprites();
-        //        shot = new Shot();
     }
 
 
@@ -172,28 +154,10 @@ public abstract class AbstractBoard extends JPanel {
         Toolkit.getDefaultToolkit().sync();
     }
 
-    private void gameOver(Graphics g) {
-
-        g.setColor(Color.black);
-        g.fillRect(0, 0, Commons.BOARD_WIDTH, Commons.BOARD_HEIGHT);
-
-        g.setColor(new Color(0, 32, 48));
-        g.fillRect(50, Commons.BOARD_WIDTH / 2 - 30, Commons.BOARD_WIDTH - 100, 50);
-        g.setColor(Color.white);
-        g.drawRect(50, Commons.BOARD_WIDTH / 2 - 30, Commons.BOARD_WIDTH - 100, 50);
-
-        Font small = new Font("Helvetica", Font.BOLD, 14);
-        FontMetrics fontMetrics = this.getFontMetrics(small);
-
-        g.setColor(Color.white);
-        g.setFont(small);
-        g.drawString(message, (Commons.BOARD_WIDTH - fontMetrics.stringWidth(message)) / 2,
-                Commons.BOARD_WIDTH / 2);
-    }
+    protected abstract void gameOver(Graphics g);
 
 
     private void doGameCycle() {
-
         update();
         repaint();
     }
