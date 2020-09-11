@@ -16,9 +16,12 @@ public abstract class BasePlayer extends Sprite {
         initialState();
     }
 
+
     protected abstract void loadImage();
 
     protected abstract void initialState();
+
+
 
     public void setKeyPressedListener(KeyPressedListener keyPressedListener) {
         this.keyPressedListener = keyPressedListener;
