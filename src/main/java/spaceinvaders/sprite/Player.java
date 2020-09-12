@@ -8,12 +8,14 @@ import spriteframework.listeners.KeyReleasedListener;
 import javax.swing.*;
 import java.awt.event.KeyEvent;
 
+import static spaceinvaders.Commons.PLAYER_IMAGE_PATH;
+
 public class Player extends BasePlayer {
 
     private int width;
 
     public Player() {
-        super("/images/player.png");
+        super(PLAYER_IMAGE_PATH);
         getImageDimensions();
         setKeyPressedListener(new KeyPressedListener() {
             @Override

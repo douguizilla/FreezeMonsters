@@ -15,4 +15,5 @@ public interface Commons extends spriteframework.Commons{
     int CHANCE = 5;
     int PLAYER_WIDTH = 15;
     int PLAYER_HEIGHT = 10;
+    String PLAYER_IMAGE_PATH = "/images/player.png";
 }
