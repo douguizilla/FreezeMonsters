@@ -68,9 +68,7 @@ public abstract class AbstractBoard extends JPanel {
         players.add(createPlayer());
     }
 
-    protected Player createPlayer() {
-        return new Player();
-    }
+    protected abstract BasePlayer createPlayer();
 
     public BasePlayer getPlayer(int i) {
         if (i >= 0 && i < players.size())

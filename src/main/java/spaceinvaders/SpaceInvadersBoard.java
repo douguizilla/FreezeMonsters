@@ -30,7 +30,6 @@ public class SpaceInvadersBoard extends AbstractBoard{
 
 
 
-
     protected void createBadSprites() {  // create sprites
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 6; j++) {
@@ -76,7 +75,12 @@ public class SpaceInvadersBoard extends AbstractBoard{
 		}
 	}
 
-	@Override
+    @Override
+    protected BasePlayer createPlayer() {
+        return new Player();
+    }
+
+    @Override
     protected void gameOver(Graphics g) {
 
         g.setColor(Color.black);
