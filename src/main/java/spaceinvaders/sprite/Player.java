@@ -13,7 +13,7 @@ public class Player extends BasePlayer {
     private int width;
 
     public Player() {
-        super();
+        super("/images/player.png");
         getImageDimensions();
         setKeyPressedListener(new KeyPressedListener() {
             @Override
@@ -21,50 +21,35 @@ public class Player extends BasePlayer {
                 int key = keyEvent.getKeyCode();
 
                 if (key == KeyEvent.VK_LEFT) {
-
-                    dx = -2;
+                    moveHorizontalDisplacement(-2);
                 }
 
                 else if (key == KeyEvent.VK_RIGHT) {
-
-                    dx = 2;
+                    moveHorizontalDisplacement(2);
                 }
             }
         });
+
         setKeyReleasedListener(new KeyReleasedListener() {
             @Override
             public void onKeyReleased(KeyEvent keyEvent) {
                 int key = keyEvent.getKeyCode();
 
                 if (key == KeyEvent.VK_LEFT) {
-
-                    dx = 0;
+                    moveHorizontalDisplacement(0);
                 }
 
                 else if (key == KeyEvent.VK_RIGHT) {
-
-                    dx = 0;
+                    moveHorizontalDisplacement(0);
                 }
             }
         });
     }
 
-    @Override
-    protected void loadImage() {
-        ImageIcon ii = new ImageIcon(this.getClass().getResource("/images/player.png"));
-        width = ii.getImage().getWidth(null);
-        setImage(ii.getImage());
-    }
 
     @Override
-    protected void initialState() {
-        setX(Commons.INIT_PLAYER_X);
-        setY(Commons.INIT_PLAYER_Y);
-    }
-
     public void act() {
-
-        x += dx;
+        super.act();
 
         if (x <= 2) {
 
