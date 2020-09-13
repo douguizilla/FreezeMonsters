@@ -1,7 +1,7 @@
 package spaceinvaders;
 
 
-public interface Commons extends spriteframework.Commons{
+public interface Commons {
 
     int BOMB_HEIGHT = 5;
 
@@ -22,4 +22,8 @@ public interface Commons extends spriteframework.Commons{
 
     int BORDER_RIGHT = 30;
     int BORDER_LEFT = 5;
+    int GROUND = 290;
+    int BOARD_WIDTH = 358;
+    int BOARD_HEIGHT = 350;
+    int DELAY = 17;
 }

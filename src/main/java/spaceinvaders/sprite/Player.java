@@ -1,6 +1,6 @@
 package spaceinvaders.sprite;
 
-import spriteframework.Commons;
+import spaceinvaders.Commons;
 import spriteframework.Player.BasePlayer;
 import spriteframework.listeners.KeyPressedListener;
 import spriteframework.listeners.KeyReleasedListener;

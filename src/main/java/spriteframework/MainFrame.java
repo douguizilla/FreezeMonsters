@@ -2,17 +2,18 @@ package spriteframework;
 
 import javax.swing.*;
 
+
 public abstract class MainFrame extends JFrame {
 
     // hotspot
     protected abstract AbstractBoard createBoard();
 
-    public MainFrame(String title) {
+    public MainFrame(String title, int BOARD_WIDTH, int BOARD_HEIGHT) {
 
         add(createBoard());
 
         setTitle(title);
-        setSize(Commons.BOARD_WIDTH, Commons.BOARD_HEIGHT);
+        setSize(BOARD_WIDTH, BOARD_HEIGHT);
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);

@@ -15,11 +15,11 @@ import java.util.LinkedList;
 
 public abstract class AbstractBoard extends JPanel {
 
-    private int GROUND;
-    private int BOARD_WIDTH;
-    private int BOARD_HEIGHT;
-    private int DELAY;
-    private Color COLOR;
+    protected int GROUND;
+    public int BOARD_WIDTH;
+    public int BOARD_HEIGHT;
+    protected int DELAY;
+    protected Color COLOR;
 
     protected Dimension dimension;
 

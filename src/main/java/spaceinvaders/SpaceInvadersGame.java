@@ -9,11 +9,11 @@ public class SpaceInvadersGame extends MainFrame {
 
 
 	public SpaceInvadersGame () {
-		super("Space Invaders");
+		super("Space Invaders", Commons.BOARD_WIDTH, Commons.BOARD_HEIGHT);
 	}
 	
 	protected  AbstractBoard createBoard() {
-		return new SpaceInvadersBoard(290, 358, 350, Color.BLACK, 17);
+		return new SpaceInvadersBoard(Commons.GROUND, Commons.BOARD_WIDTH, Commons.BOARD_HEIGHT, Color.BLACK, Commons.DELAY);
 	}
 
 

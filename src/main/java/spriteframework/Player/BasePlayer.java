@@ -1,6 +1,5 @@
 package spriteframework.Player;
 
-import spriteframework.Commons;
 import spriteframework.listeners.KeyPressedListener;
 import spriteframework.listeners.KeyReleasedListener;
 import spriteframework.sprite.Sprite;
