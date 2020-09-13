@@ -3,7 +3,6 @@ package spriteframework;
 
 import spriteframework.Player.BasePlayer;
 import spriteframework.sprite.BadSprite;
-import spaceinvaders.sprite.Player;
 
 import javax.swing.*;
 import java.awt.*;
@@ -27,6 +26,8 @@ public abstract class AbstractBoard extends JPanel {
 
     protected Timer timer;
 
+
+
     protected abstract void createBadSprites();
 
     protected abstract void createOtherSprites();
@@ -37,8 +38,18 @@ public abstract class AbstractBoard extends JPanel {
 
     protected abstract void processOtherSprites(BasePlayer player, KeyEvent e);
 
-    public AbstractBoard() {
+    private int GROUND;
+    private int BOARD_WIDTH;
+    private int BOARD_HEIGHT;
+    private int DELAY;
+    private Color COLOR;
 
+    public AbstractBoard(int GROUND, int BOARD_WIDTH, int BOARD_HEIGHT, Color COLOR, int DELAY) {
+        this.GROUND = GROUND;
+        this.BOARD_WIDTH = BOARD_WIDTH;
+        this.BOARD_HEIGHT = BOARD_HEIGHT;
+        this.DELAY = DELAY;
+        this.COLOR = COLOR;
         initBoard();
         createPlayers();
         badSprites = new LinkedList<BadSprite>();
@@ -50,10 +61,10 @@ public abstract class AbstractBoard extends JPanel {
 
         addKeyListener(new TAdapter());
         setFocusable(true);
-        dimension = new Dimension(Commons.BOARD_WIDTH, Commons.BOARD_HEIGHT);
+        dimension = new Dimension(getBOARD_WIDTH(), getBOARD_HEIGHT());
         setBackground(Color.black);
 
-        timer = new Timer(Commons.DELAY, new GameCycle());
+        timer = new Timer(getDELAY(), new GameCycle());
         timer.start();
 
         createPlayers();
@@ -133,8 +144,7 @@ public abstract class AbstractBoard extends JPanel {
 
         if (inGame) {
 
-            g.drawLine(0, Commons.GROUND,
-                    Commons.BOARD_WIDTH, Commons.GROUND);
+            g.drawLine(0, getGROUND(), getBOARD_WIDTH(), getGROUND());
 
             drawBadSprites(g);
             drawPlayers(g);
@@ -184,5 +194,45 @@ public abstract class AbstractBoard extends JPanel {
                 processOtherSprites(player, e); // hotspot
             }
         }
+    }
+
+    public int getGROUND() {
+        return GROUND;
+    }
+
+    public void setGROUND(int GROUND) {
+        this.GROUND = GROUND;
+    }
+
+    public int getBOARD_WIDTH() {
+        return BOARD_WIDTH;
+    }
+
+    public void setBOARD_WIDTH(int BOARD_WIDTH) {
+        this.BOARD_WIDTH = BOARD_WIDTH;
+    }
+
+    public int getBOARD_HEIGHT() {
+        return BOARD_HEIGHT;
+    }
+
+    public void setBOARD_HEIGHT(int BOARD_HEIGHT) {
+        this.BOARD_HEIGHT = BOARD_HEIGHT;
+    }
+
+    public int getDELAY() {
+        return DELAY;
+    }
+
+    public void setDELAY(int DELAY) {
+        this.DELAY = DELAY;
+    }
+
+    public Color getCOLOR() {
+        return COLOR;
+    }
+
+    public void setCOLOR(Color COLOR) {
+        this.COLOR = COLOR;
     }
 }

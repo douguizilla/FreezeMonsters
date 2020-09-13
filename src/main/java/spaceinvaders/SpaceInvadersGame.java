@@ -1,6 +1,6 @@
 package spaceinvaders;
 
-import java.awt.EventQueue;
+import java.awt.*;
 
 import spriteframework.AbstractBoard;
 import spriteframework.MainFrame;
@@ -13,7 +13,7 @@ public class SpaceInvadersGame extends MainFrame {
 	}
 	
 	protected  AbstractBoard createBoard() {
-		return new SpaceInvadersBoard();
+		return new SpaceInvadersBoard(290, 358, 350, Color.BLACK, 17);
 	}
 
 

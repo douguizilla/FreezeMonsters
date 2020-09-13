@@ -17,5 +17,9 @@ public interface Commons extends spriteframework.Commons{
     int PLAYER_HEIGHT = 10;
     int INIT_PLAYER_X = 270;
     int INIT_PLAYER_Y = 280;
+
     String PLAYER_IMAGE_PATH = "/images/player.png";
+
+    int BORDER_RIGHT = 30;
+    int BORDER_LEFT = 5;
 }

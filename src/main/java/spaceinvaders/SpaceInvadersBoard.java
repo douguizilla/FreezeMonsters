@@ -28,6 +28,9 @@ public class SpaceInvadersBoard extends AbstractBoard{
 
     private String explImg = "images/explosion.png";
 
+    public SpaceInvadersBoard(int GROUND, int BOARD_WIDTH, int BOARD_HEIGHT, Color COLOR, int DELAY) {
+        super(GROUND, BOARD_WIDTH, BOARD_HEIGHT, COLOR, DELAY);
+    }
 
 
     protected void createBadSprites() {  // create sprites
@@ -84,20 +87,20 @@ public class SpaceInvadersBoard extends AbstractBoard{
     protected void gameOver(Graphics g) {
 
         g.setColor(Color.black);
-        g.fillRect(0, 0, Commons.BOARD_WIDTH, Commons.BOARD_HEIGHT);
+        g.fillRect(0, 0, getBOARD_WIDTH(), getBOARD_HEIGHT());
 
         g.setColor(new Color(0, 32, 48));
-        g.fillRect(50, Commons.BOARD_WIDTH / 2 - 30, Commons.BOARD_WIDTH - 100, 50);
+        g.fillRect(50, getBOARD_WIDTH() / 2 - 30, getBOARD_WIDTH() - 100, 50);
         g.setColor(Color.white);
-        g.drawRect(50, Commons.BOARD_WIDTH / 2 - 30, Commons.BOARD_WIDTH - 100, 50);
+        g.drawRect(50, getBOARD_WIDTH() / 2 - 30, getBOARD_WIDTH() - 100, 50);
 
         Font small = new Font("Helvetica", Font.BOLD, 14);
         FontMetrics fontMetrics = this.getFontMetrics(small);
 
         g.setColor(Color.white);
         g.setFont(small);
-        g.drawString(message, (Commons.BOARD_WIDTH - fontMetrics.stringWidth(message)) / 2,
-                Commons.BOARD_WIDTH / 2);
+        g.drawString(message, (getBOARD_WIDTH() - fontMetrics.stringWidth(message)) / 2,
+                getBOARD_WIDTH() / 2);
     }
 
     protected void update() {
@@ -158,7 +161,7 @@ public class SpaceInvadersBoard extends AbstractBoard{
 
             int x = alien.getX();
 
-            if (x >= Commons.BOARD_WIDTH - Commons.BORDER_RIGHT && direction != -1) {
+            if (x >= getBOARD_WIDTH() - Commons.BORDER_RIGHT && direction != -1) {
 
                 direction = -1;
 
@@ -194,7 +197,7 @@ public class SpaceInvadersBoard extends AbstractBoard{
 
                 int y = alien.getY();
 
-                if (y > Commons.GROUND - Commons.ALIEN_HEIGHT) {
+                if (y > getGROUND() - Commons.ALIEN_HEIGHT) {
                     inGame = false;
                     message = "Invasion!";
                 }
@@ -249,7 +252,7 @@ public class SpaceInvadersBoard extends AbstractBoard{
 
                 bomb.setY(bomb.getY() + 1);
 
-                if (bomb.getY() >= Commons.GROUND - Commons.BOMB_HEIGHT) {
+                if (bomb.getY() >= getGROUND() - Commons.BOMB_HEIGHT) {
 
                     bomb.setDestroyed(true);
                 }
