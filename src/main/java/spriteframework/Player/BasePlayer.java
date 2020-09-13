@@ -65,4 +65,8 @@ public abstract class BasePlayer extends Sprite {
     public void moveVerticalDisplacement(int number){
         verticalDisplacement = number;
     }
+
+    public int getWidth() {
+        return width;
+    }
 }

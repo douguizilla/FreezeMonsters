@@ -12,8 +12,6 @@ import static spaceinvaders.Commons.PLAYER_IMAGE_PATH;
 
 public class Player extends BasePlayer {
 
-    private int width;
-
     public Player() {
         super(PLAYER_IMAGE_PATH);
         getImageDimensions();
@@ -58,9 +56,9 @@ public class Player extends BasePlayer {
             x = 2;
         }
 
-        if (x >= Commons.BOARD_WIDTH - 2 * width) {
+        if (x >= Commons.BOARD_WIDTH - 2 * this.getWidth()) {
 
-            x = Commons.BOARD_WIDTH - 2 * width;
+            x = Commons.BOARD_WIDTH - 2 * this.getWidth();
         }
     }
 
