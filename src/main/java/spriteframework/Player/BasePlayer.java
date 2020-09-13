@@ -16,12 +16,10 @@ public abstract class BasePlayer extends Sprite {
     private int verticalDisplacement = 0;
     private int width;
 
-    public BasePlayer(String PlayerImagePath) {
+    public BasePlayer(String PlayerImagePath, int playerInitialPositionX, int playerInitialPositionY) {
         loadImage(PlayerImagePath);
-        initialState();
+        initialState(playerInitialPositionX,playerInitialPositionY);
     }
-
-
 
     protected void loadImage(String PlayerImagePath) {
         ImageIcon ii = new ImageIcon(this.getClass().getResource(PlayerImagePath));
@@ -29,9 +27,9 @@ public abstract class BasePlayer extends Sprite {
         setImage(ii.getImage());
     }
 
-    protected void initialState() {
-        setX(Commons.INIT_PLAYER_X);
-        setY(Commons.INIT_PLAYER_Y);
+    protected void initialState(int playerInitialPositionX, int playerInitialPositionY) {
+        setX(playerInitialPositionX);
+        setY(playerInitialPositionY);
     }
 
 
