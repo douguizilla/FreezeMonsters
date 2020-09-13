@@ -16,8 +16,8 @@ import java.util.LinkedList;
 public abstract class AbstractBoard extends JPanel {
 
     protected int GROUND;
-    public int BOARD_WIDTH;
-    public int BOARD_HEIGHT;
+    protected int BOARD_WIDTH;
+    protected int BOARD_HEIGHT;
     protected int DELAY;
     protected Color COLOR;
 
@@ -200,39 +200,21 @@ public abstract class AbstractBoard extends JPanel {
         return GROUND;
     }
 
-    public void setGROUND(int GROUND) {
-        this.GROUND = GROUND;
-    }
 
     public int getBOARD_WIDTH() {
         return BOARD_WIDTH;
     }
 
-    public void setBOARD_WIDTH(int BOARD_WIDTH) {
-        this.BOARD_WIDTH = BOARD_WIDTH;
-    }
 
     public int getBOARD_HEIGHT() {
         return BOARD_HEIGHT;
     }
 
-    public void setBOARD_HEIGHT(int BOARD_HEIGHT) {
-        this.BOARD_HEIGHT = BOARD_HEIGHT;
-    }
 
     public int getDELAY() {
         return DELAY;
     }
 
-    public void setDELAY(int DELAY) {
-        this.DELAY = DELAY;
-    }
 
-    public Color getCOLOR() {
-        return COLOR;
-    }
 
-    public void setCOLOR(Color COLOR) {
-        this.COLOR = COLOR;
-    }
 }
