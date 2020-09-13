@@ -15,6 +15,12 @@ import java.util.LinkedList;
 
 public abstract class AbstractBoard extends JPanel {
 
+    private int GROUND;
+    private int BOARD_WIDTH;
+    private int BOARD_HEIGHT;
+    private int DELAY;
+    private Color COLOR;
+
     protected Dimension dimension;
 
     protected LinkedList<BasePlayer> players;
@@ -27,7 +33,6 @@ public abstract class AbstractBoard extends JPanel {
     protected Timer timer;
 
 
-
     protected abstract void createBadSprites();
 
     protected abstract void createOtherSprites();
@@ -38,11 +43,6 @@ public abstract class AbstractBoard extends JPanel {
 
     protected abstract void processOtherSprites(BasePlayer player, KeyEvent e);
 
-    private int GROUND;
-    private int BOARD_WIDTH;
-    private int BOARD_HEIGHT;
-    private int DELAY;
-    private Color COLOR;
 
     public AbstractBoard(int GROUND, int BOARD_WIDTH, int BOARD_HEIGHT, Color COLOR, int DELAY) {
         this.GROUND = GROUND;
