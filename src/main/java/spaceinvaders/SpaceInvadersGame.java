@@ -3,6 +3,7 @@ package spaceinvaders;
 import java.awt.*;
 
 import spriteframework.AbstractBoard;
+import spriteframework.GameBoardSpecification;
 import spriteframework.MainFrame;
 
 public class SpaceInvadersGame extends MainFrame {
@@ -13,7 +14,14 @@ public class SpaceInvadersGame extends MainFrame {
 	}
 	
 	protected  AbstractBoard createBoard() {
-		return new SpaceInvadersBoard(Commons.GROUND, Commons.BOARD_WIDTH, Commons.BOARD_HEIGHT, Color.BLACK, Commons.DELAY);
+		GameBoardSpecification gameBoardSpecification = new GameBoardSpecification(
+				Commons.GROUND,
+				Commons.BOARD_WIDTH,
+				Commons.BOARD_HEIGHT,
+				Color.BLACK,
+				Commons.DELAY
+		);
+		return new SpaceInvadersBoard(gameBoardSpecification);
 	}
 
 

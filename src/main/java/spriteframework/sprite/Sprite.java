@@ -34,47 +34,38 @@ public class Sprite {
     }
 
     public void setImage(Image image) {
-
         this.image = image;
     }
 
     public Image getImage() {
-
         return image;
     }
 
     public void setX(int x) {
-
         this.x = x;
     }
 
     public void setY(int y) {
-
         this.y = y;
     }
 
     public int getY() {
-
         return y;
     }
 
     public int getX() {
-
         return x;
     }
 
     public int getImageWidth() {
-
         return imageWidth;
     }
 
     public int getImageHeight() {
-
         return imageHeight;
     }
 
     public Rectangle getRect() {
-
         return new Rectangle(x, y,
                 image.getWidth(null), image.getHeight(null));
     }
@@ -99,6 +90,4 @@ public class Sprite {
     public void moveY(int direction) {
         this.y += direction;
     }
-
-
 }

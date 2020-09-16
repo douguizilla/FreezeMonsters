@@ -17,11 +17,7 @@ import java.util.LinkedList;
 
 public abstract class AbstractBoard extends JPanel {
 
-    protected int GROUND;
-    protected int BOARD_WIDTH;
-    protected int BOARD_HEIGHT;
-    protected int DELAY;
-    protected Color COLOR;
+    private GameBoardSpecification gameBoardSpecification;
 
     protected Dimension dimension;
 
@@ -35,7 +31,7 @@ public abstract class AbstractBoard extends JPanel {
     protected Timer timer;
     private Graphics2D graphics;
 
-    protected abstract void createBadSprites();
+    protected abstract LinkedList<BadSprite> createBadSprites();
 
     protected abstract void createOtherSprites();
 
@@ -46,47 +42,27 @@ public abstract class AbstractBoard extends JPanel {
     protected abstract void processOtherSprites(BasePlayer player, KeyEvent e);
 
 
-    public AbstractBoard(int GROUND, int BOARD_WIDTH, int BOARD_HEIGHT, Color COLOR, int DELAY) {
-        this.GROUND = GROUND;
-        this.BOARD_WIDTH = BOARD_WIDTH;
-        this.BOARD_HEIGHT = BOARD_HEIGHT;
-        this.DELAY = DELAY;
-        this.COLOR = COLOR;
+    public AbstractBoard(GameBoardSpecification gameBoardSpecification) {
+        this.gameBoardSpecification = gameBoardSpecification;
         initBoard();
-        createPlayers();
-        badSprites = new LinkedList<>();
-        createBadSprites();
-        createOtherSprites();
     }
 
     private void initBoard() {
-
         addKeyListener(new TAdapter());
         setFocusable(true);
-        dimension = new Dimension(getBOARD_WIDTH(), getBOARD_HEIGHT());
-        setBackground(Color.black);
-
-        timer = new Timer(getDELAY(), new GameCycle());
+        dimension = new Dimension(
+                gameBoardSpecification.getBoardWidth(),
+                gameBoardSpecification.getBoardHeight()
+        );
+        setBackground(gameBoardSpecification.getColor());
+        timer = new Timer(gameBoardSpecification.getDelay(), new GameCycle());
         timer.start();
-
         createPlayers();
-        badSprites = new LinkedList<>();
-        createBadSprites();
+        badSprites = createBadSprites();
         createOtherSprites();
     }
 
-    protected void createPlayers() {
-        players = new LinkedList<>();
-        players.add(createPlayer());
-    }
-
-    protected abstract BasePlayer createPlayer();
-
-    public BasePlayer getPlayer(int i) {
-        if (i >= 0 && i < players.size())
-            return players.get(i);
-        return null;
-    }
+    protected abstract void createPlayers();
 
     private void drawBadSprites() {
         for (BadSprite bad : badSprites) {
@@ -106,7 +82,7 @@ public abstract class AbstractBoard extends JPanel {
 
     private void drawBadnessFromBadnessBoxSprite(BadSprite bad){
         if(isBadnessBoxSprite(bad)){
-            badnessBoxSpriteTreatment((BadnessBoxSprite) bad, graphics);
+            badnessBoxSpriteTreatment((BadnessBoxSprite) bad);
         }
     }
 
@@ -114,7 +90,7 @@ public abstract class AbstractBoard extends JPanel {
         return bad instanceof BadnessBoxSprite;
     }
 
-    private void badnessBoxSpriteTreatment(BadnessBoxSprite badnessBoxSprite, Graphics graphics){
+    private void badnessBoxSpriteTreatment(BadnessBoxSprite badnessBoxSprite){
         if (badnessBoxSpriteBadnessIsNotNull(badnessBoxSprite)) {
             for (BadSprite badness : badnessBoxSprite.getBadnesses()) {
                 drawBadnessIfNotDestroyed(badness, graphics);
@@ -168,24 +144,23 @@ public abstract class AbstractBoard extends JPanel {
         graphics.setColor(Color.black);
         graphics.fillRect(0, 0, dimension.width, dimension.height);
         graphics.setColor(Color.green);
-
         if (inGame) {
-
-            graphics.drawLine(0, getGROUND(), getBOARD_WIDTH(), getGROUND());
-
+            graphics.drawLine(
+                    0,
+                    gameBoardSpecification.getGround(),
+                    gameBoardSpecification.getBoardWidth(),
+                    gameBoardSpecification.getGround()
+            );
             drawBadSprites();
             drawPlayers();
             drawOtherSprites(graphics);
 
         } else {
-
             if (timer.isRunning()) {
                 timer.stop();
             }
-
             gameOver(graphics);
         }
-
         Toolkit.getDefaultToolkit().sync();
     }
 
@@ -217,31 +192,8 @@ public abstract class AbstractBoard extends JPanel {
         public void keyPressed(KeyEvent e) {
             for (BasePlayer player : players) {
                 player.keyPressed(e);
-
-                processOtherSprites(player, e); // hotspot
+                processOtherSprites(player, e);
             }
         }
     }
-
-    public int getGROUND() {
-        return GROUND;
-    }
-
-
-    public int getBOARD_WIDTH() {
-        return BOARD_WIDTH;
-    }
-
-
-    public int getBOARD_HEIGHT() {
-        return BOARD_HEIGHT;
-    }
-
-
-    public int getDELAY() {
-        return DELAY;
-    }
-
-
-
 }

@@ -21,11 +21,11 @@ public class Player extends BasePlayer {
                 int key = keyEvent.getKeyCode();
 
                 if (key == KeyEvent.VK_LEFT) {
-                    moveHorizontalDisplacement(-2);
+                    moveHorizontalDisplacement(2, LEFT_DIRECTION);
                 }
 
                 else if (key == KeyEvent.VK_RIGHT) {
-                    moveHorizontalDisplacement(2);
+                    moveHorizontalDisplacement(2, RIGHT_DIRECTION);
                 }
             }
         });
@@ -36,11 +36,11 @@ public class Player extends BasePlayer {
                 int key = keyEvent.getKeyCode();
 
                 if (key == KeyEvent.VK_LEFT) {
-                    moveHorizontalDisplacement(0);
+                    moveHorizontalDisplacement(0, LEFT_DIRECTION);
                 }
 
                 else if (key == KeyEvent.VK_RIGHT) {
-                    moveHorizontalDisplacement(0);
+                    moveHorizontalDisplacement(0, RIGHT_DIRECTION);
                 }
             }
         });
@@ -48,14 +48,10 @@ public class Player extends BasePlayer {
 
     public void act() {
         super.act();
-
         if (x <= 2) {
-
             x = 2;
         }
-
         if (x >= Commons.BOARD_WIDTH - 2 * this.getWidth()) {
-
             x = Commons.BOARD_WIDTH - 2 * this.getWidth();
         }
     }
