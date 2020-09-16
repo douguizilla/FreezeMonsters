@@ -112,10 +112,8 @@ public class SpaceInvadersBoard extends AbstractBoard{
             message = "Game won!";
         }
 
-        // player
         for (BasePlayer player: players) {
-            Player player1 = (Player) player;
-            player1.act();
+            player.act();
         }
 
 

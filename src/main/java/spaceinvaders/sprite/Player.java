@@ -46,8 +46,6 @@ public class Player extends BasePlayer {
         });
     }
 
-
-    @Override
     public void act() {
         super.act();
 
@@ -61,5 +59,4 @@ public class Player extends BasePlayer {
             x = Commons.BOARD_WIDTH - 2 * this.getWidth();
         }
     }
-
 }

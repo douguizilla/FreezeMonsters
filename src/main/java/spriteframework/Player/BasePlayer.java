@@ -53,6 +53,7 @@ public abstract class BasePlayer extends Sprite {
 
     public void act(){
         x += horizontalDisplacement;
+        y += verticalDisplacement;
     }
 
     public void moveHorizontalDisplacement(int number){
