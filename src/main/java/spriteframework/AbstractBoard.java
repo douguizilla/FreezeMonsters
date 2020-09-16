@@ -3,6 +3,8 @@ package spriteframework;
 
 import spriteframework.Player.BasePlayer;
 import spriteframework.sprite.BadSprite;
+import spriteframework.sprite.BadnessBoxSprite;
+import spriteframework.sprite.Sprite;
 
 import javax.swing.*;
 import java.awt.*;
@@ -31,13 +33,13 @@ public abstract class AbstractBoard extends JPanel {
     protected String message = "Game Over";
 
     protected Timer timer;
-
+    private Graphics2D graphics;
 
     protected abstract void createBadSprites();
 
     protected abstract void createOtherSprites();
 
-    protected abstract void drawOtherSprites(Graphics g);
+    protected abstract void drawOtherSprites(Graphics graphics);
 
     protected abstract void update();
 
@@ -52,7 +54,7 @@ public abstract class AbstractBoard extends JPanel {
         this.COLOR = COLOR;
         initBoard();
         createPlayers();
-        badSprites = new LinkedList<BadSprite>();
+        badSprites = new LinkedList<>();
         createBadSprites();
         createOtherSprites();
     }
@@ -68,14 +70,13 @@ public abstract class AbstractBoard extends JPanel {
         timer.start();
 
         createPlayers();
-        badSprites = new LinkedList<BadSprite>();
+        badSprites = new LinkedList<>();
         createBadSprites();
         createOtherSprites();
     }
 
-
     protected void createPlayers() {
-        players = new LinkedList<BasePlayer>();
+        players = new LinkedList<>();
         players.add(createPlayer());
     }
 
@@ -87,41 +88,69 @@ public abstract class AbstractBoard extends JPanel {
         return null;
     }
 
-    private void drawBadSprites(Graphics g) {
-
+    private void drawBadSprites() {
         for (BadSprite bad : badSprites) {
+            drawBadSprite(bad);
+            drawBadnessFromBadnessBoxSprite(bad);
+        }
+    }
 
-            if (bad.isVisible()) {
-                g.drawImage(bad.getImage(), bad.getX(), bad.getY(), this);
-            }
+    private void drawBadSprite(BadSprite bad){
+        if (bad.isVisible()) {
+            drawSprite(bad);
+        }
+        if (bad.isDying()) {
+            bad.die();
+        }
+    }
 
-            if (bad.isDying()) {
-                bad.die();
-            }
-            if (bad.getBadnesses() != null) {
-                for (BadSprite badness : bad.getBadnesses()) {
-                    if (!badness.isDestroyed()) {
-                        g.drawImage(badness.getImage(), badness.getX(), badness.getY(), this);
-                    }
-                }
+    private void drawBadnessFromBadnessBoxSprite(BadSprite bad){
+        if(isBadnessBoxSprite(bad)){
+            badnessBoxSpriteTreatment((BadnessBoxSprite) bad, graphics);
+        }
+    }
+
+    private boolean isBadnessBoxSprite(BadSprite bad){
+        return bad instanceof BadnessBoxSprite;
+    }
+
+    private void badnessBoxSpriteTreatment(BadnessBoxSprite badnessBoxSprite, Graphics graphics){
+        if (badnessBoxSpriteBadnessIsNotNull(badnessBoxSprite)) {
+            for (BadSprite badness : badnessBoxSprite.getBadnesses()) {
+                drawBadnessIfNotDestroyed(badness, graphics);
             }
         }
     }
 
-    private void drawPlayers(Graphics g) {
+    private boolean badnessBoxSpriteBadnessIsNotNull(BadnessBoxSprite badnessBoxSprite){
+        return badnessBoxSprite.getBadnesses() != null;
+    }
+
+    private void drawBadnessIfNotDestroyed(BadSprite badness, Graphics graphics){
+        if (badnessIsNotDestroyed(badness)) {
+            drawSprite(badness);
+        }
+    }
+
+    private boolean badnessIsNotDestroyed(BadSprite badness){
+        return !badness.isDestroyed();
+    }
+
+    private void drawPlayers() {
         for (BasePlayer player : players) {
             if (player.isVisible()) {
-                g.drawImage(player.getImage(), player.getX(), player.getY(), this);
+                drawSprite(player);
             }
-
             if (player.isDying()) {
-
                 player.die();
                 inGame = false;
             }
         }
     }
 
+    private void drawSprite(Sprite sprite){
+        graphics.drawImage(sprite.getImage(), sprite.getX(), sprite.getY(), this);
+    }
 
     @Override
     public void paintComponent(Graphics g) {
@@ -130,23 +159,23 @@ public abstract class AbstractBoard extends JPanel {
     }
 
     private void doDrawing(Graphics g1) { // Template Method
-        Graphics2D g = (Graphics2D) g1;
-        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+        graphics = (Graphics2D) g1;
+        graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
 
-        g.setRenderingHint(RenderingHints.KEY_RENDERING,
+        graphics.setRenderingHint(RenderingHints.KEY_RENDERING,
                 RenderingHints.VALUE_RENDER_QUALITY);
-        g.setColor(Color.black);
-        g.fillRect(0, 0, dimension.width, dimension.height);
-        g.setColor(Color.green);
+        graphics.setColor(Color.black);
+        graphics.fillRect(0, 0, dimension.width, dimension.height);
+        graphics.setColor(Color.green);
 
         if (inGame) {
 
-            g.drawLine(0, getGROUND(), getBOARD_WIDTH(), getGROUND());
+            graphics.drawLine(0, getGROUND(), getBOARD_WIDTH(), getGROUND());
 
-            drawBadSprites(g);
-            drawPlayers(g);
-            drawOtherSprites(g);
+            drawBadSprites();
+            drawPlayers();
+            drawOtherSprites(graphics);
 
         } else {
 
@@ -154,7 +183,7 @@ public abstract class AbstractBoard extends JPanel {
                 timer.stop();
             }
 
-            gameOver(g);
+            gameOver(graphics);
         }
 
         Toolkit.getDefaultToolkit().sync();
