@@ -125,9 +125,7 @@ public class SpaceInvadersBoard extends AbstractBoard {
 
     @Override
     protected void update() {
-
         if (deaths == Commons.NUMBER_OF_ALIENS_TO_DESTROY) {
-
             inGame = false;
             timer.stop();
             message = "Game won!";

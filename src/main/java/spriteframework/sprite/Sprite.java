@@ -3,15 +3,18 @@ package spriteframework.sprite;
 import java.awt.*;
 
 public class Sprite {
+    protected int LEFT_DIRECTION = -1;
+    protected int RIGHT_DIRECTION = 1;
+    protected int UP_DIRECTION = -1;
+    protected int DOWN_DIRECTION = 1;
 
     private boolean visible;
     protected Image image;
     private boolean dying;
 
-    protected int x;
-    protected int y;
     protected int imageWidth;
     protected int imageHeight;
+    private Position position = new Position();
 
     public Sprite() {
 
@@ -24,12 +27,10 @@ public class Sprite {
     }
 
     public boolean isVisible() {
-
         return visible;
     }
 
     protected void setVisible(boolean visible) {
-
         this.visible = visible;
     }
 
@@ -42,19 +43,28 @@ public class Sprite {
     }
 
     public void setX(int x) {
-        this.x = x;
+        position.setxPosition(x);
     }
 
     public void setY(int y) {
-        this.y = y;
+        position.setyPosition(y);
+
     }
 
     public int getY() {
-        return y;
+        return position.getyPosition();
     }
 
     public int getX() {
-        return x;
+        return position.getxPosition();
+    }
+
+    public void setPosition(Position position){
+        this.position = position;
+    }
+
+    public Position getPosition(){
+        return this.position;
     }
 
     public int getImageWidth() {
@@ -66,7 +76,7 @@ public class Sprite {
     }
 
     public Rectangle getRect() {
-        return new Rectangle(x, y,
+        return new Rectangle(getX(), getY(),
                 image.getWidth(null), image.getHeight(null));
     }
 
@@ -84,10 +94,12 @@ public class Sprite {
     }
 
     public void moveX(int direction) {
-        this.x += direction;
+        int newPosition = getX()+direction;
+        setX(newPosition);
     }
 
     public void moveY(int direction) {
-        this.y += direction;
+        int newPosition = getY()+direction;
+        setY(newPosition);
     }
 }

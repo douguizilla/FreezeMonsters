@@ -17,8 +17,8 @@ public class BomberSprite extends BadnessBoxSprite {
     }
 
     private void initBomber(int x, int y) {
-        this.x = x;
-        this.y = y;
+        this.setX(x);
+        this.setY(y);
         bomb = new Bomb(x, y);
         String alienImg = "images/alien.png";
         ImageIcon ii = new ImageIcon(alienImg);
