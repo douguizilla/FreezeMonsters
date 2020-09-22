@@ -42,13 +42,13 @@ public class Player extends BasePlayer {
         });
     }
 
-    public void act() {
-        super.act();
+    public void update() {
+        super.update();
         if (getX() <= 2) {
             setX(2);
         }
-        if (getX() >= Commons.BOARD_WIDTH - 2 * this.getWidth()) {
-            setX(Commons.BOARD_WIDTH - 2 * this.getWidth());
+        if (getX() >= Commons.BOARD_WIDTH - 2 * this.getImageWidth()) {
+            setX(Commons.BOARD_WIDTH - 2 * this.getImageWidth());
         }
     }
 }

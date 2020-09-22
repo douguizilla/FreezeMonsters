@@ -2,6 +2,9 @@ package spriteframework;
 
 
 import spriteframework.Player.BasePlayer;
+import spriteframework.listeners.KeyPressedListener;
+import spriteframework.listeners.KeyReleasedListener;
+import spriteframework.listeners.OtherSpriteListener;
 import spriteframework.sprite.BadSprite;
 import spriteframework.sprite.BadnessBoxSprite;
 import spriteframework.sprite.Sprite;
@@ -30,17 +33,13 @@ public abstract class AbstractBoard extends JPanel {
 
     protected Timer timer;
     private Graphics2D graphics;
+    private KeyPressedListener keyPressedListener;
+    private KeyReleasedListener keyReleasedListener;
+    private OtherSpriteListener otherSpriteListener;
 
     protected abstract LinkedList<BadSprite> createBadSprites();
 
-    protected abstract void createOtherSprites();
-
-    protected abstract void drawOtherSprites(Graphics graphics);
-
     protected abstract void update();
-
-    protected abstract void processOtherSprites(BasePlayer player, KeyEvent e);
-
 
     public AbstractBoard(GameBoardSpecification gameBoardSpecification) {
         this.gameBoardSpecification = gameBoardSpecification;
@@ -59,7 +58,9 @@ public abstract class AbstractBoard extends JPanel {
         timer.start();
         createPlayers();
         badSprites = createBadSprites();
-        createOtherSprites();
+        if (otherSpriteListener != null) {
+            otherSpriteListener.createOtherSprites();
+        }
     }
 
     protected abstract void createPlayers();
@@ -71,7 +72,7 @@ public abstract class AbstractBoard extends JPanel {
         }
     }
 
-    private void drawBadSprite(BadSprite bad){
+    private void drawBadSprite(BadSprite bad) {
         if (bad.isVisible()) {
             drawSprite(bad);
         }
@@ -80,17 +81,17 @@ public abstract class AbstractBoard extends JPanel {
         }
     }
 
-    private void drawBadnessFromBadnessBoxSprite(BadSprite bad){
-        if(isBadnessBoxSprite(bad)){
+    private void drawBadnessFromBadnessBoxSprite(BadSprite bad) {
+        if (isBadnessBoxSprite(bad)) {
             badnessBoxSpriteTreatment((BadnessBoxSprite) bad);
         }
     }
 
-    private boolean isBadnessBoxSprite(BadSprite bad){
+    private boolean isBadnessBoxSprite(BadSprite bad) {
         return bad instanceof BadnessBoxSprite;
     }
 
-    private void badnessBoxSpriteTreatment(BadnessBoxSprite badnessBoxSprite){
+    private void badnessBoxSpriteTreatment(BadnessBoxSprite badnessBoxSprite) {
         if (badnessBoxSpriteBadnessIsNotNull(badnessBoxSprite)) {
             for (BadSprite badness : badnessBoxSprite.getBadnesses()) {
                 drawBadnessIfNotDestroyed(badness, graphics);
@@ -98,17 +99,17 @@ public abstract class AbstractBoard extends JPanel {
         }
     }
 
-    private boolean badnessBoxSpriteBadnessIsNotNull(BadnessBoxSprite badnessBoxSprite){
+    private boolean badnessBoxSpriteBadnessIsNotNull(BadnessBoxSprite badnessBoxSprite) {
         return badnessBoxSprite.getBadnesses() != null;
     }
 
-    private void drawBadnessIfNotDestroyed(BadSprite badness, Graphics graphics){
+    private void drawBadnessIfNotDestroyed(BadSprite badness, Graphics graphics) {
         if (badnessIsNotDestroyed(badness)) {
             drawSprite(badness);
         }
     }
 
-    private boolean badnessIsNotDestroyed(BadSprite badness){
+    private boolean badnessIsNotDestroyed(BadSprite badness) {
         return !badness.isDestroyed();
     }
 
@@ -124,7 +125,7 @@ public abstract class AbstractBoard extends JPanel {
         }
     }
 
-    private void drawSprite(Sprite sprite){
+    private void drawSprite(Sprite sprite) {
         graphics.drawImage(sprite.getImage(), sprite.getX(), sprite.getY(), this);
     }
 
@@ -153,7 +154,11 @@ public abstract class AbstractBoard extends JPanel {
             );
             drawBadSprites();
             drawPlayers();
-            drawOtherSprites(graphics);
+
+            if (otherSpriteListener != null) {
+                otherSpriteListener.drawOtherSprites(graphics);
+            }
+
 
         } else {
             if (timer.isRunning()) {
@@ -184,16 +189,34 @@ public abstract class AbstractBoard extends JPanel {
 
         @Override
         public void keyReleased(KeyEvent e) {
-            for (BasePlayer player : players)
-                player.keyReleased(e);
+//            for (BasePlayer player : players)
+//                player.keyReleased(e);
+            if (keyReleasedListener != null) {
+                keyReleasedListener.onKeyReleased(e);
+            }
         }
 
         @Override
         public void keyPressed(KeyEvent e) {
-            for (BasePlayer player : players) {
-                player.keyPressed(e);
-                processOtherSprites(player, e);
+////            for (BasePlayer player : players) {
+////                player.keyPressed(e);
+//                processOtherSprites(player, e);
+//            }
+            if (keyPressedListener != null) {
+                keyPressedListener.onKeyPressed(e);
             }
         }
+    }
+
+    protected void setKeyPressedListener(KeyPressedListener keyPressedListener) {
+        this.keyPressedListener = keyPressedListener;
+    }
+
+    protected void setKeyReleasedListener(KeyReleasedListener keyReleasedListener) {
+        this.keyReleasedListener = keyReleasedListener;
+    }
+
+    public void setOtherSpriteListener(OtherSpriteListener otherSpriteListener) {
+        this.otherSpriteListener = otherSpriteListener;
     }
 }

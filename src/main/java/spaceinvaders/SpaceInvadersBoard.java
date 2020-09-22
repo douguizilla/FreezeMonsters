@@ -1,22 +1,23 @@
 package spaceinvaders;
 
 
-import java.awt.*;
+import spaceinvaders.sprite.Bomb;
+import spaceinvaders.sprite.BomberSprite;
+import spaceinvaders.sprite.Player;
+import spaceinvaders.sprite.Shot;
+import spriteframework.AbstractBoard;
+import spriteframework.GameBoardSpecification;
+import spriteframework.Player.BasePlayer;
+import spriteframework.listeners.KeyPressedListener;
+import spriteframework.listeners.KeyReleasedListener;
+import spriteframework.listeners.OtherSpriteListener;
+import spriteframework.sprite.BadSprite;
 
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Random;
-
-import javax.swing.ImageIcon;
-
-import spriteframework.AbstractBoard;
-import spriteframework.GameBoardSpecification;
-import spriteframework.Player.BasePlayer;
-import spriteframework.sprite.BadSprite;
-import spaceinvaders.sprite.Player;
-
-import spaceinvaders.sprite.*;
 
 public class SpaceInvadersBoard extends AbstractBoard {
     private LinkedList<BadSprite> aliens;
@@ -25,11 +26,35 @@ public class SpaceInvadersBoard extends AbstractBoard {
     private int direction = -1;
     private int deaths = 0;
 
-    private String explImg = "images/explosion.png";
-
     public SpaceInvadersBoard(GameBoardSpecification gameBoardSpecification) {
         super(gameBoardSpecification);
         this.gameBoardSpecification = gameBoardSpecification;
+        setKeyPressedListener(new KeyPressedListener() {
+            @Override
+            public void onKeyPressed(KeyEvent keyEvent) {
+                players.get(0).keyPressed(keyEvent);
+                processOtherSprites(players.get(0), keyEvent);
+            }
+        });
+
+        setKeyReleasedListener(new KeyReleasedListener() {
+            @Override
+            public void onKeyReleased(KeyEvent keyEvent) {
+                players.get(0).keyReleased(keyEvent);
+            }
+        });
+
+        setOtherSpriteListener(new OtherSpriteListener() {
+            @Override
+            public void createOtherSprites() {
+                shot = new Shot();
+            }
+
+            @Override
+            public void drawOtherSprites(Graphics graphics) {
+                drawShot(graphics);
+            }
+        });
     }
 
     @Override
@@ -45,10 +70,6 @@ public class SpaceInvadersBoard extends AbstractBoard {
         return aliens;
     }
 
-    @Override
-    protected void createOtherSprites() {
-        shot = new Shot();
-    }
 
     private void drawShot(Graphics g) {
         if (shot.isVisible()) {
@@ -57,10 +78,11 @@ public class SpaceInvadersBoard extends AbstractBoard {
     }
 
     //TODO remove with shot on BasePlayer
-    @Override
-    protected void drawOtherSprites(Graphics g) {
-        drawShot(g);
-    }
+//    @Override
+//    protected void drawOtherSprites(Graphics g) {
+//        drawShot(g);
+//    }
+
     //TODO remove with shot on BasePlayer
     protected void processOtherSprites(BasePlayer player, KeyEvent e) {
         int x = player.getX();
@@ -74,6 +96,8 @@ public class SpaceInvadersBoard extends AbstractBoard {
             }
         }
     }
+
+
 
     @Override
     protected void createPlayers() {
@@ -132,10 +156,10 @@ public class SpaceInvadersBoard extends AbstractBoard {
         }
 
         for (BasePlayer player : players) {
-            player.act();
+            player.update();
         }
 
-        if (shot.isVisible()) {
+        if (shot != null && shot.isVisible()) {
 
             int shotX = shot.getX();
             int shotY = shot.getY();
@@ -151,8 +175,7 @@ public class SpaceInvadersBoard extends AbstractBoard {
                             && shotY >= (alienY)
                             && shotY <= (alienY + Commons.ALIEN_HEIGHT)) {
 
-                        ImageIcon ii = new ImageIcon(explImg);
-                        alien.setImage(ii.getImage());
+                        alien.setImageFromPath(Commons.EXPLOSION_IMAGE_PATH);
                         alien.setDying(true);
                         deaths++;
                         shot.die();
@@ -249,8 +272,8 @@ public class SpaceInvadersBoard extends AbstractBoard {
                         && bombY >= (playerY)
                         && bombY <= (playerY + Commons.PLAYER_HEIGHT)) {
 
-                    ImageIcon ii = new ImageIcon(explImg);
-                    players.get(0).setImage(ii.getImage());
+
+                    players.get(0).setImageFromPath(Commons.EXPLOSION_IMAGE_PATH);
                     players.get(0).setDying(true);
                     bomb.setDestroyed(true);
                 }

@@ -19,6 +19,8 @@ public interface Commons {
     int INIT_PLAYER_Y = 280;
 
     String PLAYER_IMAGE_PATH = "/images/player.png";
+    String EXPLOSION_IMAGE_PATH = "images/explosion.png";
+    String ALIEN_IMAGE_PATH = "images/alien.png";
 
     int BORDER_RIGHT = 30;
     int BORDER_LEFT = 5;

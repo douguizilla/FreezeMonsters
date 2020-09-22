@@ -5,7 +5,6 @@ import spriteframework.listeners.KeyReleasedListener;
 import spriteframework.sprite.Position;
 import spriteframework.sprite.Sprite;
 
-import javax.swing.*;
 import java.awt.event.KeyEvent;
 
 public abstract class BasePlayer extends Sprite {
@@ -14,17 +13,10 @@ public abstract class BasePlayer extends Sprite {
     private KeyReleasedListener keyReleasedListener;
     private int horizontalDisplacement = 0;
     private int verticalDisplacement = 0;
-    private int width;
 
-    public BasePlayer(String PlayerImagePath, Position playerInitialPosition) {
-        loadImage(PlayerImagePath);
+    public BasePlayer(String playerImagePath, Position playerInitialPosition) {
+        setImageFromResource(playerImagePath);
         setPosition(playerInitialPosition);
-    }
-
-    protected void loadImage(String PlayerImagePath) {
-        ImageIcon ii = new ImageIcon(this.getClass().getResource(PlayerImagePath));
-        width = ii.getImage().getWidth(null);
-        setImage(ii.getImage());
     }
 
     public void setKeyPressedListener(KeyPressedListener keyPressedListener) {
@@ -45,7 +37,7 @@ public abstract class BasePlayer extends Sprite {
             keyReleasedListener.onKeyReleased(eventKey);
     }
 
-    public void act(){
+    public void update(){
         moveX(horizontalDisplacement);
         moveY(verticalDisplacement);
     }
@@ -56,9 +48,5 @@ public abstract class BasePlayer extends Sprite {
 
     public void moveVerticalDisplacement(int quantityToMove, int direction){
         verticalDisplacement = quantityToMove*direction;
-    }
-
-    public int getWidth() {
-        return width;
     }
 }

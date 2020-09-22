@@ -1,7 +1,5 @@
 package spaceinvaders.sprite;
 
-import javax.swing.ImageIcon;
-
 import spriteframework.sprite.BadSprite;
 
 public class Bomb extends BadSprite {
@@ -19,8 +17,7 @@ public class Bomb extends BadSprite {
         setX(x);
         setY(y);
         String bombImg = "images/bomb.png";
-        ImageIcon ii = new ImageIcon(bombImg);
-        setImage(ii.getImage());
+        setImageFromPath(bombImg);
     }
 
     public void setDestroyed(boolean destroyed) {

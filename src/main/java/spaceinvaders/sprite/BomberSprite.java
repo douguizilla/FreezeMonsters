@@ -1,11 +1,10 @@
 package spaceinvaders.sprite;
 
-import java.util.LinkedList;
-
-import javax.swing.ImageIcon;
-
+import spaceinvaders.Commons;
 import spriteframework.sprite.BadSprite;
 import spriteframework.sprite.BadnessBoxSprite;
+
+import java.util.LinkedList;
 
 public class BomberSprite extends BadnessBoxSprite {
 
@@ -20,9 +19,7 @@ public class BomberSprite extends BadnessBoxSprite {
         this.setX(x);
         this.setY(y);
         bomb = new Bomb(x, y);
-        String alienImg = "images/alien.png";
-        ImageIcon ii = new ImageIcon(alienImg);
-        setImage(ii.getImage());
+        setImageFromPath(Commons.ALIEN_IMAGE_PATH);
     }
 
     public Bomb getBomb() {

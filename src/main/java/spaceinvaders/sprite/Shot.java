@@ -1,7 +1,5 @@
 package spaceinvaders.sprite;
 
-import javax.swing.ImageIcon;
-
 import spriteframework.sprite.BadSprite;
 
 
@@ -18,8 +16,7 @@ public class Shot extends BadSprite {
     private void initShot(int x, int y) {
 
         String shotImg = "images/shot.png";
-        ImageIcon ii = new ImageIcon(shotImg);
-        setImage(ii.getImage());
+        setImageFromPath(shotImg);
 
         int H_SPACE = 6;
         setX(x + H_SPACE);

@@ -1,6 +1,8 @@
 package spriteframework.sprite;
 
+import javax.swing.*;
 import java.awt.*;
+import java.net.URL;
 
 public class Sprite {
     protected int LEFT_DIRECTION = -1;
@@ -9,20 +11,18 @@ public class Sprite {
     protected int DOWN_DIRECTION = 1;
 
     private boolean visible;
-    protected Image image;
+    private Image image;
     private boolean dying;
 
-    protected int imageWidth;
-    protected int imageHeight;
+    private int imageWidth;
+    private int imageHeight;
     private Position position = new Position();
 
     public Sprite() {
-
         visible = true;
     }
 
     public void die() {
-
         visible = false;
     }
 
@@ -34,9 +34,30 @@ public class Sprite {
         this.visible = visible;
     }
 
-    public void setImage(Image image) {
-        this.image = image;
+    public void setImageFromPath(String imagePath) {
+        ImageIcon imageIcon = new ImageIcon(imagePath);
+        this.image = imageIcon.getImage();
+        setImageDimensions(image);
     }
+
+    public void setImageFromResource(String imageResource){
+        URL imageUrl = this.getClass().getResource(imageResource);
+        ImageIcon imageIcon = new ImageIcon(imageUrl);
+        this.image = imageIcon.getImage();
+        setImageDimensions(image);
+    }
+
+    public void setImage(Image image){
+        this.image = image;
+        setImageDimensions(image);
+    }
+
+    private void setImageDimensions(Image image){
+        this.imageWidth = image.getWidth(null);
+        this.imageHeight = image.getHeight(null);
+    }
+
+
 
     public Image getImage() {
         return image;
@@ -48,7 +69,6 @@ public class Sprite {
 
     public void setY(int y) {
         position.setyPosition(y);
-
     }
 
     public int getY() {
