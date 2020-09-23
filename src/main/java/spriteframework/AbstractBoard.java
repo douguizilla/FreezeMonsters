@@ -20,22 +20,19 @@ import java.util.LinkedList;
 
 public abstract class AbstractBoard extends JPanel {
 
-    private GameBoardSpecification gameBoardSpecification;
 
     protected Dimension dimension;
-
     protected LinkedList<BasePlayer> players;
-
     protected LinkedList<BadSprite> badSprites;
-
     protected boolean inGame = true;
-    protected String message = "Game Over";
-
     protected Timer timer;
+    protected GraphicsDrawner graphicsDrawner = new GraphicsDrawner();
+
     private Graphics2D graphics;
     private KeyPressedListener keyPressedListener;
     private KeyReleasedListener keyReleasedListener;
     private OtherSpriteListener otherSpriteListener;
+    private GameBoardSpecification gameBoardSpecification;
 
     protected abstract LinkedList<BadSprite> createBadSprites();
 
@@ -58,9 +55,7 @@ public abstract class AbstractBoard extends JPanel {
         timer.start();
         createPlayers();
         badSprites = createBadSprites();
-        if (otherSpriteListener != null) {
-            otherSpriteListener.createOtherSprites();
-        }
+
     }
 
     protected abstract void createPlayers();
@@ -125,7 +120,7 @@ public abstract class AbstractBoard extends JPanel {
         }
     }
 
-    private void drawSprite(Sprite sprite) {
+    protected void drawSprite(Sprite sprite) {
         graphics.drawImage(sprite.getImage(), sprite.getX(), sprite.getY(), this);
     }
 
@@ -135,48 +130,39 @@ public abstract class AbstractBoard extends JPanel {
         doDrawing(g);
     }
 
-    private void doDrawing(Graphics g1) { // Template Method
+    private void doDrawing(Graphics g1) {
         graphics = (Graphics2D) g1;
         graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
-
         graphics.setRenderingHint(RenderingHints.KEY_RENDERING,
                 RenderingHints.VALUE_RENDER_QUALITY);
-        graphics.setColor(Color.black);
-        graphics.fillRect(0, 0, dimension.width, dimension.height);
-        graphics.setColor(Color.green);
+        graphicsDrawner.setGraphics(graphics);
+        drawBoard();
         if (inGame) {
-            graphics.drawLine(
-                    0,
-                    gameBoardSpecification.getGround(),
-                    gameBoardSpecification.getBoardWidth(),
-                    gameBoardSpecification.getGround()
-            );
             drawBadSprites();
             drawPlayers();
 
             if (otherSpriteListener != null) {
-                otherSpriteListener.drawOtherSprites(graphics);
+                otherSpriteListener.drawOtherSprites();
             }
-
 
         } else {
             if (timer.isRunning()) {
                 timer.stop();
             }
-            gameOver(graphics);
+            gameOver();
         }
         Toolkit.getDefaultToolkit().sync();
     }
 
-    protected abstract void gameOver(Graphics g);
+    protected abstract void drawBoard();
 
+    protected abstract void gameOver();
 
     private void doGameCycle() {
         update();
         repaint();
     }
-
 
     private class GameCycle implements ActionListener {
 
@@ -189,8 +175,6 @@ public abstract class AbstractBoard extends JPanel {
 
         @Override
         public void keyReleased(KeyEvent e) {
-//            for (BasePlayer player : players)
-//                player.keyReleased(e);
             if (keyReleasedListener != null) {
                 keyReleasedListener.onKeyReleased(e);
             }
@@ -198,10 +182,6 @@ public abstract class AbstractBoard extends JPanel {
 
         @Override
         public void keyPressed(KeyEvent e) {
-////            for (BasePlayer player : players) {
-////                player.keyPressed(e);
-//                processOtherSprites(player, e);
-//            }
             if (keyPressedListener != null) {
                 keyPressedListener.onKeyPressed(e);
             }
@@ -218,5 +198,8 @@ public abstract class AbstractBoard extends JPanel {
 
     public void setOtherSpriteListener(OtherSpriteListener otherSpriteListener) {
         this.otherSpriteListener = otherSpriteListener;
+        this.otherSpriteListener.createOtherSprites();
     }
+
+
 }

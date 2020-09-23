@@ -4,5 +4,5 @@ import java.awt.*;
 
 public interface OtherSpriteListener {
     public void createOtherSprites();
-    public void drawOtherSprites(Graphics graphics);
+    public void drawOtherSprites();
 }

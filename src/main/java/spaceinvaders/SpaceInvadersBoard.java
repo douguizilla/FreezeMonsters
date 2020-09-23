@@ -12,6 +12,7 @@ import spriteframework.listeners.KeyPressedListener;
 import spriteframework.listeners.KeyReleasedListener;
 import spriteframework.listeners.OtherSpriteListener;
 import spriteframework.sprite.BadSprite;
+import spriteframework.sprite.Position;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -25,6 +26,7 @@ public class SpaceInvadersBoard extends AbstractBoard {
     private GameBoardSpecification gameBoardSpecification;
     private int direction = -1;
     private int deaths = 0;
+    protected String message = "Game Over";
 
     public SpaceInvadersBoard(GameBoardSpecification gameBoardSpecification) {
         super(gameBoardSpecification);
@@ -51,8 +53,8 @@ public class SpaceInvadersBoard extends AbstractBoard {
             }
 
             @Override
-            public void drawOtherSprites(Graphics graphics) {
-                drawShot(graphics);
+            public void drawOtherSprites() {
+                drawShot();
             }
         });
     }
@@ -71,19 +73,12 @@ public class SpaceInvadersBoard extends AbstractBoard {
     }
 
 
-    private void drawShot(Graphics g) {
+    private void drawShot() {
         if (shot.isVisible()) {
-            g.drawImage(shot.getImage(), shot.getX(), shot.getY(), this);
+            drawSprite(shot);
         }
     }
 
-    //TODO remove with shot on BasePlayer
-//    @Override
-//    protected void drawOtherSprites(Graphics g) {
-//        drawShot(g);
-//    }
-
-    //TODO remove with shot on BasePlayer
     protected void processOtherSprites(BasePlayer player, KeyEvent e) {
         int x = player.getX();
         int y = player.getY();
@@ -97,54 +92,74 @@ public class SpaceInvadersBoard extends AbstractBoard {
         }
     }
 
-
-
     @Override
     protected void createPlayers() {
         players = new LinkedList<>();
         players.add(createPlayer());
     }
 
+    @Override
+    protected void drawBoard() {
+        graphicsDrawner.fillRectangle(
+                new Rectangle(
+                        0,
+                        0,
+                        dimension.width,
+                        dimension.height
+                ),
+                Color.black
+        );
+        if (inGame) {
+            Position initialLinePosition = new Position(
+                    0,
+                    gameBoardSpecification.getGround()
+            );
+
+            Position finalLinePosition = new Position(
+                    gameBoardSpecification.getBoardWidth(),
+                    gameBoardSpecification.getGround()
+            );
+            graphicsDrawner.drawLine(initialLinePosition, finalLinePosition, Color.green);
+        }
+    }
+
     protected BasePlayer createPlayer() {
         return new Player();
     }
 
-    //TODO remove the graphics
     @Override
-    protected void gameOver(Graphics g) {
-
-        g.setColor(Color.black);
-        g.fillRect(
-                0,
-                0,
-                gameBoardSpecification.getBoardWidth(),
-                gameBoardSpecification.getBoardHeight()
+    protected void gameOver() {
+        graphicsDrawner.fillRectangle(new Rectangle(
+                        0,
+                        0,
+                        gameBoardSpecification.getBoardWidth(),
+                        gameBoardSpecification.getBoardHeight()
+                ), Color.black
         );
 
-        g.setColor(new Color(0, 32, 48));
-        g.fillRect(
-                50,
-                gameBoardSpecification.getBoardWidth() / 2 - 30,
-                gameBoardSpecification.getBoardWidth() - 100,
-                50
+        graphicsDrawner.fillRectangle(new Rectangle(
+                        50,
+                        gameBoardSpecification.getBoardWidth() / 2 - 30,
+                        gameBoardSpecification.getBoardWidth() - 100,
+                        50
+                ), new Color(0, 32, 48)
         );
-        g.setColor(Color.white);
-        g.drawRect(
-                50,
-                gameBoardSpecification.getBoardWidth() / 2 - 30,
-                gameBoardSpecification.getBoardWidth() - 100,
-                50
+
+        graphicsDrawner.drawRectangle(new Rectangle(
+                        50,
+                        gameBoardSpecification.getBoardWidth() / 2 - 30,
+                        gameBoardSpecification.getBoardWidth() - 100,
+                        50
+                ), Color.white
         );
 
         Font small = new Font("Helvetica", Font.BOLD, 14);
         FontMetrics fontMetrics = this.getFontMetrics(small);
-
-        g.setColor(Color.white);
-        g.setFont(small);
-        g.drawString(
-                message,
+        Position position = new Position(
                 (gameBoardSpecification.getBoardWidth() - fontMetrics.stringWidth(message)) / 2,
-                gameBoardSpecification.getBoardWidth() / 2);
+                gameBoardSpecification.getBoardWidth() / 2
+        );
+        graphicsDrawner.drawString(small, Color.white, position, message);
     }
 
     @Override
@@ -159,7 +174,7 @@ public class SpaceInvadersBoard extends AbstractBoard {
             player.update();
         }
 
-        if (shot != null && shot.isVisible()) {
+        if (shot.isVisible()) {
 
             int shotX = shot.getX();
             int shotY = shot.getY();
