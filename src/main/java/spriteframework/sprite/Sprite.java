@@ -57,8 +57,6 @@ public class Sprite {
         this.imageHeight = image.getHeight(null);
     }
 
-
-
     public Image getImage() {
         return image;
     }

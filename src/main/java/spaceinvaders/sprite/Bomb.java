@@ -26,7 +26,6 @@ public class Bomb extends BadSprite {
     }
 
     public boolean isDestroyed() {
-
         return destroyed;
     }
     

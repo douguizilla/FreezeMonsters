@@ -13,8 +13,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.util.LinkedList;
 
 
@@ -29,22 +27,35 @@ public abstract class AbstractBoard extends JPanel {
     protected GraphicsDrawner graphicsDrawner = new GraphicsDrawner();
 
     private Graphics2D graphics;
-    private KeyPressedListener keyPressedListener;
-    private KeyReleasedListener keyReleasedListener;
     private OtherSpriteListener otherSpriteListener;
     private GameBoardSpecification gameBoardSpecification;
-
-    protected abstract LinkedList<BadSprite> createBadSprites();
-
-    protected abstract void update();
+    private TAdapter tAdapter = new TAdapter();
 
     public AbstractBoard(GameBoardSpecification gameBoardSpecification) {
         this.gameBoardSpecification = gameBoardSpecification;
         initBoard();
     }
 
+    protected void setKeyPressedListener(KeyPressedListener keyPressedListener) {
+        tAdapter.setKeyPressedListener(keyPressedListener);
+    }
+
+    protected void setKeyReleasedListener(KeyReleasedListener keyReleasedListener) {
+        tAdapter.setKeyReleasedListener(keyReleasedListener);
+    }
+
+    public void setOtherSpriteListener(OtherSpriteListener otherSpriteListener) {
+        this.otherSpriteListener = otherSpriteListener;
+        this.otherSpriteListener.createOtherSprites();
+    }
+
     private void initBoard() {
-        addKeyListener(new TAdapter());
+        configBoard();
+        createSprites();
+    }
+
+    private void configBoard(){
+        addKeyListener(tAdapter);
         setFocusable(true);
         dimension = new Dimension(
                 gameBoardSpecification.getBoardWidth(),
@@ -53,12 +64,52 @@ public abstract class AbstractBoard extends JPanel {
         setBackground(gameBoardSpecification.getColor());
         timer = new Timer(gameBoardSpecification.getDelay(), new GameCycle());
         timer.start();
-        createPlayers();
-        badSprites = createBadSprites();
-
     }
 
+    private void createSprites(){
+        createPlayers();
+        badSprites = createBadSprites();
+    }
+
+    protected abstract LinkedList<BadSprite> createBadSprites();
+
     protected abstract void createPlayers();
+
+    @Override
+    public void paintComponent(Graphics graphics) {
+        super.paintComponent(graphics);
+        doDrawing(graphics);
+    }
+
+    private void doDrawing(Graphics graphics) {
+        configGraphics(graphics);
+        drawBoard();
+        drawGame();
+        Toolkit.getDefaultToolkit().sync();
+    }
+
+    private void configGraphics(Graphics graphics){
+        this.graphics = (Graphics2D) graphics;
+        graphicsDrawner.setGraphics(graphics);
+    }
+
+    protected abstract void drawBoard();
+
+    private void drawGame(){
+        if (inGame) {
+            drawGameIsRunning();
+        } else {
+            drawGameIsOver();
+        }
+    }
+
+    private void drawGameIsRunning(){
+        drawBadSprites();
+        drawPlayers();
+        if (isOtherSpritesListenerNotNull()) {
+            otherSpriteListener.drawOtherSprites();
+        }
+    }
 
     private void drawBadSprites() {
         for (BadSprite bad : badSprites) {
@@ -68,9 +119,11 @@ public abstract class AbstractBoard extends JPanel {
     }
 
     private void drawBadSprite(BadSprite bad) {
-        if (bad.isVisible()) {
-            drawSprite(bad);
-        }
+        drawSpriteIfIsVisible(bad);
+        setBadSpriteDeadIfIsDying(bad);
+    }
+
+    private void setBadSpriteDeadIfIsDying(BadSprite bad){
         if (bad.isDying()) {
             bad.die();
         }
@@ -110,59 +163,40 @@ public abstract class AbstractBoard extends JPanel {
 
     private void drawPlayers() {
         for (BasePlayer player : players) {
-            if (player.isVisible()) {
-                drawSprite(player);
-            }
-            if (player.isDying()) {
-                player.die();
-                inGame = false;
-            }
+            drawSpriteIfIsVisible(player);
+            playerIsDyingTreatment(player);
         }
+    }
+
+    private void drawSpriteIfIsVisible(Sprite sprite){
+        if(sprite.isVisible()){
+            drawSprite(sprite);
+        }
+    }
+
+    private void playerIsDyingTreatment(BasePlayer player){
+        if (player.isDying()) {
+            player.die();
+            inGame = false;
+        }
+    }
+
+    private boolean isOtherSpritesListenerNotNull(){
+        return otherSpriteListener != null;
     }
 
     protected void drawSprite(Sprite sprite) {
         graphics.drawImage(sprite.getImage(), sprite.getX(), sprite.getY(), this);
     }
 
-    @Override
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        doDrawing(g);
-    }
-
-    private void doDrawing(Graphics g1) {
-        graphics = (Graphics2D) g1;
-        graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                RenderingHints.VALUE_ANTIALIAS_ON);
-        graphics.setRenderingHint(RenderingHints.KEY_RENDERING,
-                RenderingHints.VALUE_RENDER_QUALITY);
-        graphicsDrawner.setGraphics(graphics);
-        drawBoard();
-        if (inGame) {
-            drawBadSprites();
-            drawPlayers();
-
-            if (otherSpriteListener != null) {
-                otherSpriteListener.drawOtherSprites();
-            }
-
-        } else {
-            if (timer.isRunning()) {
-                timer.stop();
-            }
-            gameOver();
+    private void drawGameIsOver(){
+        if (timer.isRunning()) {
+            timer.stop();
         }
-        Toolkit.getDefaultToolkit().sync();
+        gameOver();
     }
-
-    protected abstract void drawBoard();
 
     protected abstract void gameOver();
-
-    private void doGameCycle() {
-        update();
-        repaint();
-    }
 
     private class GameCycle implements ActionListener {
 
@@ -171,35 +205,11 @@ public abstract class AbstractBoard extends JPanel {
         }
     }
 
-    private class TAdapter extends KeyAdapter {
-
-        @Override
-        public void keyReleased(KeyEvent e) {
-            if (keyReleasedListener != null) {
-                keyReleasedListener.onKeyReleased(e);
-            }
-        }
-
-        @Override
-        public void keyPressed(KeyEvent e) {
-            if (keyPressedListener != null) {
-                keyPressedListener.onKeyPressed(e);
-            }
-        }
+    private void doGameCycle() {
+        update();
+        repaint();
     }
 
-    protected void setKeyPressedListener(KeyPressedListener keyPressedListener) {
-        this.keyPressedListener = keyPressedListener;
-    }
-
-    protected void setKeyReleasedListener(KeyReleasedListener keyReleasedListener) {
-        this.keyReleasedListener = keyReleasedListener;
-    }
-
-    public void setOtherSpriteListener(OtherSpriteListener otherSpriteListener) {
-        this.otherSpriteListener = otherSpriteListener;
-        this.otherSpriteListener.createOtherSprites();
-    }
-
+    protected abstract void update();
 
 }
