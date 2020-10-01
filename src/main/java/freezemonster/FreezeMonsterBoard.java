@@ -1,6 +1,7 @@
 package freezemonster;
 
 import freezemonster.sprite.MonsterShot;
+import freezemonster.sprite.MonsterSprite;
 import spriteframework.AbstractBoard;
 import spriteframework.GameBoardSpecification;
 import spriteframework.sprite.BadSprite;
@@ -25,9 +26,14 @@ public class FreezeMonsterBoard extends AbstractBoard {
 
     @Override
     protected LinkedList<BadSprite> createBadSprites() {
-        LinkedList<BadSprite> monsterShots = new LinkedList<>();
-
-        return monsterShots;
+        LinkedList<BadSprite> monsters = new LinkedList<>();
+        int x = 0;//tem que ser posições aleatórias????
+        int y = 0; //tem que ser posições aleatórias????
+        for(int i = 0; i < Commons.MONSTERS_PATH_IMAGES.length; i++){
+            MonsterSprite monster = new MonsterSprite(x, y, Commons.MONSTERS_PATH_IMAGES[i]);
+            monsters.add(monster);
+        }
+        return monsters;
     }
 
     @Override
