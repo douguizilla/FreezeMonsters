@@ -8,7 +8,6 @@ import spaceinvaders.sprite.Shot;
 import spriteframework.AbstractBoard;
 import spriteframework.GameBoardSpecification;
 import spriteframework.Player.BasePlayer;
-import spriteframework.TAdapter;
 import spriteframework.listeners.KeyPressedListener;
 import spriteframework.listeners.KeyReleasedListener;
 import spriteframework.listeners.OtherSpriteListener;

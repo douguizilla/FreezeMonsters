@@ -1,18 +1,12 @@
 package freezemonster;
 
 import freezemonster.sprite.MonsterShot;
-import freezemonster.sprite.Monsters;
-import spaceinvaders.sprite.Shot;
 import spriteframework.AbstractBoard;
 import spriteframework.GameBoardSpecification;
-import spriteframework.listeners.KeyPressedListener;
-import spriteframework.listeners.KeyReleasedListener;
-import spriteframework.listeners.OtherSpriteListener;
 import spriteframework.sprite.BadSprite;
 import spriteframework.sprite.Position;
 
 import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.util.LinkedList;
 
 public class FreezeMonsterBoard extends AbstractBoard {
@@ -32,6 +26,7 @@ public class FreezeMonsterBoard extends AbstractBoard {
     @Override
     protected LinkedList<BadSprite> createBadSprites() {
         LinkedList<BadSprite> monsterShots = new LinkedList<>();
+
         return monsterShots;
     }
 

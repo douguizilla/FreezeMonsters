@@ -11,7 +11,6 @@ public class BomberSprite extends BadnessBoxSprite {
     private Bomb bomb;
 
     public BomberSprite(int x, int y) {
-
         initBomber(x, y);
     }
 
