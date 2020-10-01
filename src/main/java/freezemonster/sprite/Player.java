@@ -1,6 +1,6 @@
 package freezemonster.sprite;
 
-import spaceinvaders.Commons;
+import freezemonster.Commons;
 import spriteframework.Player.BasePlayer;
 import spriteframework.listeners.KeyPressedListener;
 import spriteframework.listeners.KeyReleasedListener;
@@ -9,8 +9,10 @@ import spriteframework.sprite.Position;
 import java.awt.event.KeyEvent;
 
 public class Player extends BasePlayer {
-    public Player(String playerImagePath, Position playerInitialPosition) {
-        super(playerImagePath, playerInitialPosition);
+
+    public Player() {
+        super(Commons.PLAYER_IMAGE_PATH,
+                new Position(Commons.INIT_PLAYER_X,Commons.INIT_PLAYER_Y));
         getImageDimensions();
         setKeyPressedListener(new KeyPressedListener() {
             @Override

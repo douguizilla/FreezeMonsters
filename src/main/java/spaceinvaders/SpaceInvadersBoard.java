@@ -259,7 +259,6 @@ public class SpaceInvadersBoard extends AbstractBoard {
         updateOtherSprites();
     }
 
-    //TODO remove with shot on BasePlayer
     protected void updateOtherSprites() {
         Random generator = new Random();
 

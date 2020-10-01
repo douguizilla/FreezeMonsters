@@ -2,6 +2,7 @@ package freezemonster;
 
 import freezemonster.sprite.MonsterShot;
 import freezemonster.sprite.MonsterSprite;
+import freezemonster.sprite.Player;
 import spriteframework.AbstractBoard;
 import spriteframework.GameBoardSpecification;
 import spriteframework.sprite.BadSprite;
@@ -38,7 +39,8 @@ public class FreezeMonsterBoard extends AbstractBoard {
 
     @Override
     protected void createPlayers() {
-
+        players = new LinkedList<>();
+        players.add(new Player());
     }
 
     @Override
