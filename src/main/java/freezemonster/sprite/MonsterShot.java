@@ -1,4 +1,6 @@
 package freezemonster.sprite;
 
-public class MonsterShot {
+import spriteframework.sprite.BadSprite;
+
+public class MonsterShot extends BadSprite {
 }

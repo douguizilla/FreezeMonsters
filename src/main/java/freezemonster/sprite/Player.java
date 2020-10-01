@@ -1,5 +1,6 @@
 package freezemonster.sprite;
 
+import spaceinvaders.Commons;
 import spriteframework.Player.BasePlayer;
 import spriteframework.listeners.KeyPressedListener;
 import spriteframework.listeners.KeyReleasedListener;
@@ -50,5 +51,13 @@ public class Player extends BasePlayer {
         });
     }
 
-
+    public void update() {
+        super.update();
+        if (getX() <= 2) {
+            setX(2);
+        }
+        if (getX() >= Commons.BOARD_WIDTH - 2 * this.getImageWidth()) {
+            setX(Commons.BOARD_WIDTH - 2 * this.getImageWidth());
+        }
+    }
 }
