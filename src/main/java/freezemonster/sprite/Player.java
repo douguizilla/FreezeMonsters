@@ -16,8 +16,8 @@ public class Player extends BasePlayer {
     private final String UP = "up";
     private final String DOWN = "down";
 
-    private Shot shot;
-    private String lastDirection;
+    private Shot shot = new Shot();
+    private String lastDirection = UP;
 
     public Player() {
         super(Commons.PLAYER_IMAGE_PATH, 30, 50,
