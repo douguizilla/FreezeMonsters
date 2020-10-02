@@ -40,11 +40,30 @@ public class Sprite {
         setImageDimensions(image);
     }
 
+    public void setImageFromPath(String imagePath, int width, int height){
+        ImageIcon imageIcon = new ImageIcon(imagePath);
+        Image scaledImage = getScaledImage(imageIcon, width,height);
+        this.image = scaledImage;
+        setImageDimensions(scaledImage);
+    }
+
     public void setImageFromResource(String imageResource){
         URL imageUrl = this.getClass().getResource(imageResource);
         ImageIcon imageIcon = new ImageIcon(imageUrl);
         this.image = imageIcon.getImage();
         setImageDimensions(image);
+    }
+
+    public void setImageFromResource(String imageResource, int width, int height){
+        URL imageUrl = this.getClass().getResource(imageResource);
+        ImageIcon imageIcon = new ImageIcon(imageUrl);
+        Image scaledImage = getScaledImage(imageIcon, width,height);
+        this.image = scaledImage;
+        setImageDimensions(scaledImage);
+    }
+
+    public Image getScaledImage(ImageIcon imageIcon, int width, int height){
+        return imageIcon.getImage().getScaledInstance(width,height, Image.SCALE_SMOOTH);
     }
 
     public void setImage(Image image){

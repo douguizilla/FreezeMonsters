@@ -5,11 +5,17 @@ import freezemonster.sprite.MonsterSprite;
 import freezemonster.sprite.Player;
 import spriteframework.AbstractBoard;
 import spriteframework.GameBoardSpecification;
+import spriteframework.listeners.KeyPressedListener;
+import spriteframework.listeners.KeyReleasedListener;
 import spriteframework.sprite.BadSprite;
 import spriteframework.sprite.Position;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.util.LinkedList;
+import java.util.Random;
+
+import static freezemonster.Commons.getRandomNumberInRage;
 
 public class FreezeMonsterBoard extends AbstractBoard {
     private LinkedList<BadSprite> monsters;
@@ -20,26 +26,39 @@ public class FreezeMonsterBoard extends AbstractBoard {
     protected String message = "Game Over";
 
     public FreezeMonsterBoard(GameBoardSpecification gameBoardSpecification) {
-        super(gameBoardSpecification);
+        super(gameBoardSpecification, true);
         this.gameBoardSpecification = gameBoardSpecification;
 
+        setKeyPressedListener(new KeyPressedListener() {
+            @Override
+            public void onKeyPressed(KeyEvent keyEvent) {
+                players.get(0).keyPressed(keyEvent);
+            }
+        });
+
+        setKeyReleasedListener(new KeyReleasedListener() {
+            @Override
+            public void onKeyReleased(KeyEvent keyEvent) {
+                players.get(0).keyReleased(keyEvent);
+            }
+        });
     }
 
     @Override
     protected LinkedList<BadSprite> createBadSprites() {
         LinkedList<BadSprite> monsters = new LinkedList<>();
-        int x = 0;//tem que ser posições aleatórias????
-        int y = 0; //tem que ser posições aleatórias????
         for(int i = 0; i < Commons.MONSTERS_PATH_IMAGES.length; i++){
-            MonsterSprite monster = new MonsterSprite(x, y, Commons.MONSTERS_PATH_IMAGES[i]);
+            int x = getRandomNumberInRage(Commons.BOARD_WIDTH, 0);
+            int y = getRandomNumberInRage(Commons.BOARD_HEIGHT, 0);
+            MonsterSprite monster = new MonsterSprite(x, y, Commons.MONSTERS_PATH_IMAGES[i],  Commons.MONSTERS_PATH_IMAGES[i]);
             monsters.add(monster);
         }
         return monsters;
     }
 
+
     @Override
     protected void createPlayers() {
-        players = new LinkedList<>();
         players.add(new Player());
     }
 
@@ -52,7 +71,7 @@ public class FreezeMonsterBoard extends AbstractBoard {
                         dimension.width,
                         dimension.height
                 ),
-                Color.green.brighter()
+                gameBoardSpecification.getColor()
         );
         if (inGame) {
             Position initialLinePosition = new Position(
@@ -104,6 +123,34 @@ public class FreezeMonsterBoard extends AbstractBoard {
 
     @Override
     protected void update() {
+        if (deaths == Commons.NUMBER_OF_MONSTERS_TO_DESTROY) {
+            inGame = false;
+            timer.stop();
+            message = "Game won!";
+        }
+
+        Player player = (Player) players.get(0);
+
+        if(player.isShotVisible()){
+            Position shotPosition = player.getShotPosition();
+            for(BadSprite monster: badSprites){
+                MonsterSprite monsterSprite = (MonsterSprite) monster;
+                boolean monsterHit = monsterSprite.monsterHit(shotPosition);
+
+                if(monsterHit){
+                    deaths++;
+                    player.disappearShot();
+                }
+            }
+            player.actShot();
+        }
+
+        for(BadSprite monster: badSprites){
+            MonsterSprite monsterSprite = (MonsterSprite) monster;
+            monsterSprite.moveMonster();
+        }
+
+
 
     }
 }

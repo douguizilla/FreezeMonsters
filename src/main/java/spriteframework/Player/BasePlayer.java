@@ -19,6 +19,11 @@ public abstract class BasePlayer extends Sprite {
         setPosition(playerInitialPosition);
     }
 
+    public BasePlayer(String playerImagePath, int width, int height, Position playerInitialPosition) {
+        setImageFromResource(playerImagePath, width, height);
+        setPosition(playerInitialPosition);
+    }
+
     public void setKeyPressedListener(KeyPressedListener keyPressedListener) {
         this.keyPressedListener = keyPressedListener;
     }
@@ -42,11 +47,11 @@ public abstract class BasePlayer extends Sprite {
         moveY(verticalDisplacement);
     }
 
-    public void moveHorizontalDisplacement(int quantityToMove, int direction ){
-        horizontalDisplacement = quantityToMove*direction;
+    public int moveHorizontalDisplacement(int quantityToMove, int direction ){
+        return horizontalDisplacement = quantityToMove*direction;
     }
 
-    public void moveVerticalDisplacement(int quantityToMove, int direction){
-        verticalDisplacement = quantityToMove*direction;
+    public int moveVerticalDisplacement(int quantityToMove, int direction){
+        return verticalDisplacement = quantityToMove*direction;
     }
 }

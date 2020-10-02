@@ -7,12 +7,21 @@ import spriteframework.listeners.KeyReleasedListener;
 import spriteframework.sprite.Position;
 
 import java.awt.event.KeyEvent;
+import java.util.zip.DeflaterInputStream;
 
 public class Player extends BasePlayer {
 
+    private final String LEFT = "left";
+    private final String RIGHT = "right";
+    private final String UP = "up";
+    private final String DOWN = "down";
+
+    private Shot shot;
+    private String lastDirection;
+
     public Player() {
-        super(Commons.PLAYER_IMAGE_PATH,
-                new Position(Commons.INIT_PLAYER_X,Commons.INIT_PLAYER_Y));
+        super(Commons.PLAYER_IMAGE_PATH, 30, 50,
+                new Position(Commons.INIT_PLAYER_X, Commons.INIT_PLAYER_Y));
         getImageDimensions();
         setKeyPressedListener(new KeyPressedListener() {
             @Override
@@ -20,15 +29,16 @@ public class Player extends BasePlayer {
                 int key = keyEvent.getKeyCode();
                 if (key == KeyEvent.VK_LEFT) {
                     moveHorizontalDisplacement(2, LEFT_DIRECTION);
-                }
-                else if (key == KeyEvent.VK_RIGHT) {
+                    lastDirection = LEFT;
+                } else if (key == KeyEvent.VK_RIGHT) {
                     moveHorizontalDisplacement(2, RIGHT_DIRECTION);
-                }
-                else if(key == KeyEvent.VK_UP){
-                    moveVerticalDisplacement(2,UP_DIRECTION);
-                }
-                else if(key == KeyEvent.VK_DOWN){
-                    moveVerticalDisplacement(2,DOWN_DIRECTION);
+                    lastDirection = RIGHT;
+                } else if (key == KeyEvent.VK_UP) {
+                    moveVerticalDisplacement(2, UP_DIRECTION);
+                    lastDirection = UP;
+                } else if (key == KeyEvent.VK_DOWN) {
+                    moveVerticalDisplacement(2, DOWN_DIRECTION);
+                    lastDirection = DOWN;
                 }
             }
         });
@@ -39,15 +49,12 @@ public class Player extends BasePlayer {
                 int key = keyEvent.getKeyCode();
                 if (key == KeyEvent.VK_LEFT) {
                     moveHorizontalDisplacement(0, LEFT_DIRECTION);
-                }
-                else if (key == KeyEvent.VK_RIGHT) {
+                } else if (key == KeyEvent.VK_RIGHT) {
                     moveHorizontalDisplacement(0, RIGHT_DIRECTION);
-                }
-                else if(key == KeyEvent.VK_UP){
-                    moveVerticalDisplacement(0,UP_DIRECTION);
-                }
-                else if(key == KeyEvent.VK_DOWN){
-                    moveVerticalDisplacement(0,DOWN_DIRECTION);
+                } else if (key == KeyEvent.VK_UP) {
+                    moveVerticalDisplacement(0, UP_DIRECTION);
+                } else if (key == KeyEvent.VK_DOWN) {
+                    moveVerticalDisplacement(0, DOWN_DIRECTION);
                 }
             }
         });
@@ -60,6 +67,30 @@ public class Player extends BasePlayer {
         }
         if (getX() >= Commons.BOARD_WIDTH - 2 * this.getImageWidth()) {
             setX(Commons.BOARD_WIDTH - 2 * this.getImageWidth());
+        }
+    }
+
+    public boolean isShotVisible() {
+        return shot.isVisible();
+    }
+
+    public Position getShotPosition() {
+        return shot.getPosition();
+    }
+
+    public void disappearShot() {
+        shot.die();
+    }
+
+    public void actShot() {
+        if (lastDirection.equals(LEFT)) {
+            shot.moveShotToLeftDirection();
+        } else if (lastDirection.equals(RIGHT)) {
+            shot.moveShotToRightDirection();
+        } else if (lastDirection.equals(DOWN)) {
+            shot.moveShotToDownDirection();
+        } else if (lastDirection.equals(UP)) {
+            shot.moveShotToUpDirection();
         }
     }
 }

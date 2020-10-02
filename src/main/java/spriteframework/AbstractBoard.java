@@ -20,7 +20,7 @@ public abstract class AbstractBoard extends JPanel {
 
 
     protected Dimension dimension;
-    protected LinkedList<BasePlayer> players;
+    protected LinkedList<BasePlayer> players = new LinkedList<>();
     protected LinkedList<BadSprite> badSprites;
     protected boolean inGame = true;
     protected Timer timer;
@@ -30,10 +30,15 @@ public abstract class AbstractBoard extends JPanel {
     private OtherSpriteListener otherSpriteListener;
     private GameBoardSpecification gameBoardSpecification;
     private TAdapter tAdapter = new TAdapter();
+    private boolean showSpriteDead = false;
 
     public AbstractBoard(GameBoardSpecification gameBoardSpecification) {
-        this.gameBoardSpecification = gameBoardSpecification;
-        initBoard();
+        initBoard(gameBoardSpecification);
+    }
+
+    public AbstractBoard(GameBoardSpecification gameBoardSpecification, boolean showSpriteDead) {
+        this.showSpriteDead = showSpriteDead;
+        initBoard(gameBoardSpecification);
     }
 
     protected void setKeyPressedListener(KeyPressedListener keyPressedListener) {
@@ -49,12 +54,13 @@ public abstract class AbstractBoard extends JPanel {
         this.otherSpriteListener.createOtherSprites();
     }
 
-    private void initBoard() {
+    private void initBoard(GameBoardSpecification gameBoardSpecification) {
+        this.gameBoardSpecification = gameBoardSpecification;
         configBoard();
         createSprites();
     }
 
-    private void configBoard(){
+    private void configBoard() {
         addKeyListener(tAdapter);
         setFocusable(true);
         dimension = new Dimension(
@@ -66,7 +72,7 @@ public abstract class AbstractBoard extends JPanel {
         timer.start();
     }
 
-    private void createSprites(){
+    private void createSprites() {
         createPlayers();
         badSprites = createBadSprites();
     }
@@ -88,14 +94,14 @@ public abstract class AbstractBoard extends JPanel {
         Toolkit.getDefaultToolkit().sync();
     }
 
-    private void configGraphics(Graphics graphics){
+    private void configGraphics(Graphics graphics) {
         this.graphics = (Graphics2D) graphics;
         graphicsDrawner.setGraphics(graphics);
     }
 
     protected abstract void drawBoard();
 
-    private void drawGame(){
+    private void drawGame() {
         if (inGame) {
             drawGameIsRunning();
         } else {
@@ -103,7 +109,7 @@ public abstract class AbstractBoard extends JPanel {
         }
     }
 
-    private void drawGameIsRunning(){
+    private void drawGameIsRunning() {
         drawBadSprites();
         drawPlayers();
         if (isOtherSpritesListenerNotNull()) {
@@ -120,10 +126,12 @@ public abstract class AbstractBoard extends JPanel {
 
     private void drawBadSprite(BadSprite bad) {
         drawSpriteIfIsVisible(bad);
-        setBadSpriteDeadIfIsDying(bad);
+        if (!showSpriteDead) {
+            setBadSpriteDeadIfIsDying(bad);
+        }
     }
 
-    private void setBadSpriteDeadIfIsDying(BadSprite bad){
+    private void setBadSpriteDeadIfIsDying(BadSprite bad) {
         if (bad.isDying()) {
             bad.die();
         }
@@ -168,20 +176,20 @@ public abstract class AbstractBoard extends JPanel {
         }
     }
 
-    private void drawSpriteIfIsVisible(Sprite sprite){
-        if(sprite.isVisible()){
+    private void drawSpriteIfIsVisible(Sprite sprite) {
+        if (sprite.isVisible()) {
             drawSprite(sprite);
         }
     }
 
-    private void playerIsDyingTreatment(BasePlayer player){
+    private void playerIsDyingTreatment(BasePlayer player) {
         if (player.isDying()) {
             player.die();
             inGame = false;
         }
     }
 
-    private boolean isOtherSpritesListenerNotNull(){
+    private boolean isOtherSpritesListenerNotNull() {
         return otherSpriteListener != null;
     }
 
@@ -189,7 +197,7 @@ public abstract class AbstractBoard extends JPanel {
         graphics.drawImage(sprite.getImage(), sprite.getX(), sprite.getY(), this);
     }
 
-    private void drawGameIsOver(){
+    private void drawGameIsOver() {
         if (timer.isRunning()) {
             timer.stop();
         }
