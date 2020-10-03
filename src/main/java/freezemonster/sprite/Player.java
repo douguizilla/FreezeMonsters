@@ -65,7 +65,7 @@ public class Player extends BasePlayer {
         if (getX() <= 2) {
             setX(2);
         }
-        if (getX() >= Commons.BOARD_WIDTH - 2 * this.getImageWidth()) {
+        if (getX() >= (Commons.BOARD_WIDTH - 2 * this.getImageWidth())) {
             setX(Commons.BOARD_WIDTH - 2 * this.getImageWidth());
         }
     }
@@ -93,4 +93,5 @@ public class Player extends BasePlayer {
             shot.moveShotToUpDirection();
         }
     }
+
 }

@@ -32,8 +32,8 @@ public interface Commons {
     int BORDER_RIGHT = 30;
     int BORDER_LEFT = 5;
     int GROUND = 290;
-    int BOARD_WIDTH = 358;
-    int BOARD_HEIGHT = 350;
+    int BOARD_WIDTH = 600;
+    int BOARD_HEIGHT = 600;
     int DELAY = 17;
 
     public static int getRandomNumberInRage(int max, int min){

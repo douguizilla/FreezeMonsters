@@ -130,6 +130,7 @@ public class FreezeMonsterBoard extends AbstractBoard {
         }
 
         Player player = (Player) players.get(0);
+        player.update();
 
         if(player.isShotVisible()){
             Position shotPosition = player.getShotPosition();
