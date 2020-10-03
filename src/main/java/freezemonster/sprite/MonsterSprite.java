@@ -6,7 +6,6 @@ import spriteframework.sprite.BadnessBoxSprite;
 import spriteframework.sprite.Position;
 
 import java.util.LinkedList;
-import java.util.Random;
 
 import static freezemonster.Commons.getRandomNumberInRage;
 
@@ -19,6 +18,7 @@ public class MonsterSprite extends BadnessBoxSprite {
     private final int DOWN = 4;
     private MonsterShot shot;
     private String imagePathDead;
+    private final int LIMIT_MOVEMENT = 80;
 
     public MonsterSprite(int x, int y, String imagePath, String imagePathDead) {
         initMonster(x, y);
@@ -48,6 +48,8 @@ public class MonsterSprite extends BadnessBoxSprite {
         shot.monsterShotHit(position);
         if(!isDying() && hit){
             monsterFrozen();
+        }else{
+            hit = false;
         }
         return hit;
     }
@@ -100,7 +102,7 @@ public class MonsterSprite extends BadnessBoxSprite {
         return !moved;
     }
 
-    private boolean moveMonsterToLeftDirection(){
+    private boolean moveMonsterToUpDirection(){
         int y = getY() - 2;
         if(y < 0){
             return false;
@@ -109,16 +111,16 @@ public class MonsterSprite extends BadnessBoxSprite {
         return true;
     }
 
-    private boolean moveMonsterToRightDirection(){
+    private boolean moveMonsterToDownDirection(){
         int y = getY() + 2;
-        if(y > Commons.BOARD_WIDTH){
+        if(y > Commons.BOARD_HEIGHT - LIMIT_MOVEMENT){
             return false;
         }
         setY(y);
         return true;
     }
 
-    private boolean moveMonsterToUpDirection(){
+    private boolean moveMonsterToLeftDirection(){
         int x = getX() - 2;
         if(x < 0){
             return false;
@@ -127,9 +129,9 @@ public class MonsterSprite extends BadnessBoxSprite {
         return true;
     }
 
-    private boolean moveMonsterToDownDirection(){
+    private boolean moveMonsterToRightDirection(){
         int x = getX() + 2;
-        if(x > Commons.BOARD_HEIGHT){
+        if(x > Commons.BOARD_WIDTH - LIMIT_MOVEMENT){
             return false;
         }
         setX(x);

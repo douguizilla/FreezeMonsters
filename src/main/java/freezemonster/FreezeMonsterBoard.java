@@ -61,7 +61,7 @@ public class FreezeMonsterBoard extends AbstractBoard {
         });
     }
 
-    private void  drawShot() {
+    private void drawShot() {
         if (shot.isVisible()) {
             drawSprite(shot);
         }
@@ -83,10 +83,10 @@ public class FreezeMonsterBoard extends AbstractBoard {
     @Override
     protected LinkedList<BadSprite> createBadSprites() {
         LinkedList<BadSprite> monsters = new LinkedList<>();
-        for(int i = 0; i < Commons.MONSTERS_PATH_IMAGES.length; i++){
-            int x = getRandomNumberInRage(Commons.BOARD_WIDTH, 0);
-            int y = getRandomNumberInRage(Commons.BOARD_HEIGHT, 0);
-            MonsterSprite monster = new MonsterSprite(x, y, Commons.MONSTERS_PATH_IMAGES[i],  Commons.DEAD_MONSTERS_PATH_IMAGES[i]);
+        for (int i = 0; i < Commons.MONSTERS_PATH_IMAGES.length; i++) {
+            int x = getRandomNumberInRage(Commons.BOARD_WIDTH - 80, 0);
+            int y = getRandomNumberInRage(Commons.BOARD_HEIGHT - 80, 0);
+            MonsterSprite monster = new MonsterSprite(x, y, Commons.MONSTERS_PATH_IMAGES[i], Commons.DEAD_MONSTERS_PATH_IMAGES[i]);
             monsters.add(monster);
         }
         return monsters;
@@ -168,17 +168,17 @@ public class FreezeMonsterBoard extends AbstractBoard {
         Player player = (Player) players.get(0);
         player.update();
 
-        if(!shot.isVisible()){
+        if (!shot.isVisible()) {
             playerLastDirection = player.getPlayerLastDirection();
         }
 
-        if(shot.isVisible()){
+        if (shot.isVisible()) {
 
-            for(BadSprite monster: badSprites){
+            for (BadSprite monster : badSprites) {
                 MonsterSprite monsterSprite = (MonsterSprite) monster;
                 boolean monsterHit = monsterSprite.monsterHit(shot.getPosition());
 
-                if(monsterHit){
+                if (monsterHit) {
                     deaths++;
                     shot.die();
                 }
@@ -186,11 +186,10 @@ public class FreezeMonsterBoard extends AbstractBoard {
             shot.actShot(playerLastDirection);
         }
 
-        for(BadSprite monster: badSprites){
+        for (BadSprite monster : badSprites) {
             MonsterSprite monsterSprite = (MonsterSprite) monster;
             monsterSprite.moveMonster();
         }
-
 
 
     }
