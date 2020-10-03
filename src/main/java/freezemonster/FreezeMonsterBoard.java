@@ -25,7 +25,7 @@ public class FreezeMonsterBoard extends AbstractBoard {
     private Shot shot;
     private GameBoardSpecification gameBoardSpecification;
     private int direction = -1;
-    private int deaths = 8;
+    private int deaths = 0;
     private String playerLastDirection = Commons.UP;
     protected String message = "Game Over";
 

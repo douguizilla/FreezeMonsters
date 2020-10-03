@@ -45,6 +45,7 @@ public class MonsterSprite extends BadnessBoxSprite {
 
     public boolean monsterHit(Position position){
         boolean hit = isHit(position);
+        shot.monsterShotHit(position);
         if(!isDying() && hit){
             monsterFrozen();
         }
@@ -59,21 +60,21 @@ public class MonsterSprite extends BadnessBoxSprite {
     }
 
     private void monsterFrozen(){
-        setImageFromPath(imagePathDead);
+        setImageFromResource(imagePathDead,40,40);
         setDying(true);
     }
 
     public void moveMonster(){
         if(!isDying()){
             numberOfSteps++;
-            if(numberOfSteps == 10 ){
+            if(numberOfSteps == 20 ){
                 numberOfSteps = 0;
             }
             if(numberOfSteps == 0){
                 direction = getRandomNumberInRage(4,1);
             }
             boolean monsterMoved = false;
-            while(monsterNeedMove(monsterMoved)){
+            while(true){
                 if(direction == LEFT){
                     monsterMoved = moveMonsterToLeftDirection();
                 }else if(direction == RIGHT){
@@ -84,6 +85,12 @@ public class MonsterSprite extends BadnessBoxSprite {
                 }
                 else if(direction == DOWN){
                     monsterMoved = moveMonsterToDownDirection();
+                }
+
+                if(monsterNeedMove(monsterMoved)){
+                    direction = getRandomNumberInRage(4,1);
+                }else{
+                    break;
                 }
             }
         }
