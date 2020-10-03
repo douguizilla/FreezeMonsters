@@ -3,6 +3,8 @@ package freezemonster.sprite;
 import freezemonster.Commons;
 import spriteframework.sprite.BadSprite;
 
+import static freezemonster.Commons.*;
+
 
 public class Shot extends BadSprite {
 
@@ -15,8 +17,8 @@ public class Shot extends BadSprite {
 
     private void initShot(int x, int y) {
 
-        String shotImg = "images/shot.png";
-        setImageFromPath(shotImg);
+        String shotImg = "freezemonsterimages/ray.png";
+        setImageFromPath(shotImg, 50, 50);
 
         int H_SPACE = 6;
         setX(x + H_SPACE);
@@ -59,6 +61,20 @@ public class Shot extends BadSprite {
             die();
         }else{
             setX(x);
+        }
+    }
+
+    public void actShot(String playerLastDirection) {
+        if(isVisible()) {
+            if (playerLastDirection.equals(LEFT)) {
+                this.moveShotToLeftDirection();
+            } else if (playerLastDirection.equals(RIGHT)) {
+                this.moveShotToRightDirection();
+            } else if (playerLastDirection.equals(DOWN)) {
+                this.moveShotToDownDirection();
+            } else if (playerLastDirection.equals(UP)) {
+                this.moveShotToUpDirection();
+            }
         }
     }
 }

@@ -3,10 +3,13 @@ package freezemonster;
 import freezemonster.sprite.MonsterShot;
 import freezemonster.sprite.MonsterSprite;
 import freezemonster.sprite.Player;
+import freezemonster.sprite.Shot;
 import spriteframework.AbstractBoard;
 import spriteframework.GameBoardSpecification;
+import spriteframework.Player.BasePlayer;
 import spriteframework.listeners.KeyPressedListener;
 import spriteframework.listeners.KeyReleasedListener;
+import spriteframework.listeners.OtherSpriteListener;
 import spriteframework.sprite.BadSprite;
 import spriteframework.sprite.Position;
 
@@ -19,10 +22,11 @@ import static freezemonster.Commons.getRandomNumberInRage;
 
 public class FreezeMonsterBoard extends AbstractBoard {
     private LinkedList<BadSprite> monsters;
-    private MonsterShot shot;
+    private Shot shot;
     private GameBoardSpecification gameBoardSpecification;
     private int direction = -1;
     private int deaths = 0;
+    private String playerLastDirection = Commons.UP;
     protected String message = "Game Over";
 
     public FreezeMonsterBoard(GameBoardSpecification gameBoardSpecification) {
@@ -33,6 +37,7 @@ public class FreezeMonsterBoard extends AbstractBoard {
             @Override
             public void onKeyPressed(KeyEvent keyEvent) {
                 players.get(0).keyPressed(keyEvent);
+                processOtherSprites(players.get(0), keyEvent);
             }
         });
 
@@ -42,6 +47,37 @@ public class FreezeMonsterBoard extends AbstractBoard {
                 players.get(0).keyReleased(keyEvent);
             }
         });
+
+        setOtherSpriteListener(new OtherSpriteListener() {
+            @Override
+            public void createOtherSprites() {
+                shot = new Shot();
+            }
+
+            @Override
+            public void drawOtherSprites() {
+                drawShot();
+            }
+        });
+    }
+
+    private void  drawShot() {
+        if (shot.isVisible()) {
+            drawSprite(shot);
+        }
+    }
+
+    protected void processOtherSprites(BasePlayer player, KeyEvent e) {
+        int x = player.getX();
+        int y = player.getY();
+        int key = e.getKeyCode();
+        if (key == KeyEvent.VK_SPACE) {
+            if (inGame) {
+                if (!shot.isVisible()) {
+                    shot = new Shot(x, y);
+                }
+            }
+        }
     }
 
     @Override
@@ -132,24 +168,28 @@ public class FreezeMonsterBoard extends AbstractBoard {
         Player player = (Player) players.get(0);
         player.update();
 
-        if(player.isShotVisible()){
-            Position shotPosition = player.getShotPosition();
-            for(BadSprite monster: badSprites){
-                MonsterSprite monsterSprite = (MonsterSprite) monster;
-                boolean monsterHit = monsterSprite.monsterHit(shotPosition);
-
-                if(monsterHit){
-                    deaths++;
-                    player.disappearShot();
-                }
-            }
-            player.actShot();
+        if(!shot.isVisible()){
+            playerLastDirection = player.getPlayerLastDirection();
         }
 
-        for(BadSprite monster: badSprites){
-            MonsterSprite monsterSprite = (MonsterSprite) monster;
-            monsterSprite.moveMonster();
+        if(shot.isVisible()){
+
+//            for(BadSprite monster: badSprites){
+//                MonsterSprite monsterSprite = (MonsterSprite) monster;
+//                boolean monsterHit = monsterSprite.monsterHit(shot.getPosition());
+//
+//                if(monsterHit){
+//                    deaths++;
+//                    shot.die();
+//                }
+//            }
+            shot.actShot(playerLastDirection);
         }
+
+//        for(BadSprite monster: badSprites){
+//            MonsterSprite monsterSprite = (MonsterSprite) monster;
+//            monsterSprite.moveMonster();
+//        }
 
 
 

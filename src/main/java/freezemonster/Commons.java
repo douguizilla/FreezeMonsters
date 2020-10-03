@@ -12,6 +12,11 @@ public interface Commons {
     int ALIEN_INIT_X = 150;
     int ALIEN_INIT_Y = 5;
 
+    String LEFT = "left";
+    String RIGHT = "right";
+    String UP = "up";
+    String DOWN = "down";
+
     int GO_DOWN = 15;
     int CHANCE = 5;
     int PLAYER_WIDTH = 30;
