@@ -20,7 +20,7 @@ public class Player extends BasePlayer {
     private String lastDirection = UP;
 
     public Player() {
-        super(Commons.PLAYER_IMAGE_PATH, 30, 50,
+        super(Commons.PLAYER_IMAGE_PATH, Commons.PLAYER_WIDTH, Commons.PLAYER_HEIGHT,
                 new Position(Commons.INIT_PLAYER_X, Commons.INIT_PLAYER_Y));
         getImageDimensions();
         setKeyPressedListener(new KeyPressedListener() {
@@ -65,8 +65,14 @@ public class Player extends BasePlayer {
         if (getX() <= 2) {
             setX(2);
         }
-        if (getX() >= (Commons.BOARD_WIDTH - 2 * this.getImageWidth())) {
-            setX(Commons.BOARD_WIDTH - 2 * this.getImageWidth());
+
+        int rightLimit = 45;
+        int bottomLimit = 90;
+        if (getX() >= (Commons.BOARD_WIDTH - rightLimit)) {
+            setX(Commons.BOARD_WIDTH - rightLimit);
+        }
+        if(getY() >= (Commons.BOARD_HEIGHT - bottomLimit)){
+            setY(Commons.BOARD_HEIGHT - bottomLimit);
         }
     }
 

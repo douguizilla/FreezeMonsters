@@ -14,8 +14,8 @@ public class Sprite {
     private Image image;
     private boolean dying;
 
-    private int imageWidth;
-    private int imageHeight;
+    private int imageWidth = 0;
+    private int imageHeight = 0;
     private Position position = new Position();
 
     public Sprite() {
@@ -44,7 +44,7 @@ public class Sprite {
         ImageIcon imageIcon = new ImageIcon(imagePath);
         Image scaledImage = getScaledImage(imageIcon, width,height);
         this.image = scaledImage;
-        setImageDimensions(scaledImage);
+        setImageDimensions(width, height);
     }
 
     public void setImageFromResource(String imageResource){
@@ -59,7 +59,7 @@ public class Sprite {
         ImageIcon imageIcon = new ImageIcon(imageUrl);
         Image scaledImage = getScaledImage(imageIcon, width,height);
         this.image = scaledImage;
-        setImageDimensions(scaledImage);
+        setImageDimensions(width, height);
     }
 
     public Image getScaledImage(ImageIcon imageIcon, int width, int height){
@@ -74,6 +74,11 @@ public class Sprite {
     private void setImageDimensions(Image image){
         this.imageWidth = image.getWidth(null);
         this.imageHeight = image.getHeight(null);
+    }
+
+    private void setImageDimensions(int imageWidth, int imageHeight){
+        this.imageWidth = imageWidth;
+        this.imageHeight = imageHeight;
     }
 
     public Image getImage() {
