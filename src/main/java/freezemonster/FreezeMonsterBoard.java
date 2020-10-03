@@ -25,7 +25,7 @@ public class FreezeMonsterBoard extends AbstractBoard {
     private Shot shot;
     private GameBoardSpecification gameBoardSpecification;
     private int direction = -1;
-    private int deaths = 0;
+    private int deaths = 8;
     private String playerLastDirection = Commons.UP;
     protected String message = "Game Over";
 
@@ -86,7 +86,7 @@ public class FreezeMonsterBoard extends AbstractBoard {
         for(int i = 0; i < Commons.MONSTERS_PATH_IMAGES.length; i++){
             int x = getRandomNumberInRage(Commons.BOARD_WIDTH, 0);
             int y = getRandomNumberInRage(Commons.BOARD_HEIGHT, 0);
-            MonsterSprite monster = new MonsterSprite(x, y, Commons.MONSTERS_PATH_IMAGES[i],  Commons.MONSTERS_PATH_IMAGES[i]);
+            MonsterSprite monster = new MonsterSprite(x, y, Commons.MONSTERS_PATH_IMAGES[i],  Commons.DEAD_MONSTERS_PATH_IMAGES[i]);
             monsters.add(monster);
         }
         return monsters;
@@ -123,7 +123,7 @@ public class FreezeMonsterBoard extends AbstractBoard {
     }
 
     @Override
-    protected void gameOver() {
+    protected void gameFinished() {
         graphicsDrawner.fillRectangle(new Rectangle(
                         0,
                         0,
@@ -174,22 +174,22 @@ public class FreezeMonsterBoard extends AbstractBoard {
 
         if(shot.isVisible()){
 
-//            for(BadSprite monster: badSprites){
-//                MonsterSprite monsterSprite = (MonsterSprite) monster;
-//                boolean monsterHit = monsterSprite.monsterHit(shot.getPosition());
-//
-//                if(monsterHit){
-//                    deaths++;
-//                    shot.die();
-//                }
-//            }
+            for(BadSprite monster: badSprites){
+                MonsterSprite monsterSprite = (MonsterSprite) monster;
+                boolean monsterHit = monsterSprite.monsterHit(shot.getPosition());
+
+                if(monsterHit){
+                    deaths++;
+                    shot.die();
+                }
+            }
             shot.actShot(playerLastDirection);
         }
 
-//        for(BadSprite monster: badSprites){
-//            MonsterSprite monsterSprite = (MonsterSprite) monster;
-//            monsterSprite.moveMonster();
-//        }
+        for(BadSprite monster: badSprites){
+            MonsterSprite monsterSprite = (MonsterSprite) monster;
+            monsterSprite.moveMonster();
+        }
 
 
 

@@ -17,10 +17,9 @@ public class Shot extends BadSprite {
 
     private void initShot(int x, int y) {
 
-        String shotImg = "freezemonsterimages/ray.png";
-        setImageFromPath(shotImg, 50, 50);
+        setImageFromResource(RAY_IMAGE_PATH, 25, 25);
 
-        int H_SPACE = 6;
+         int H_SPACE = 6;
         setX(x + H_SPACE);
 
         int V_SPACE = 1;
@@ -29,38 +28,38 @@ public class Shot extends BadSprite {
 
 
     public void moveShotToRightDirection(){
-        int y = getY() + 4;
-        if(y > Commons.BOARD_WIDTH){
-            die();
-        }else{
-            setY(y);
-        }
-    }
-
-    public void moveShotToLeftDirection(){
-        int y = getY() - 4;
-        if(y < 0){
-            die();
-        }else{
-            setY(y);
-        }
-    }
-
-    public void moveShotToDownDirection(){
         int x = getX() + 4;
-        if(x > Commons.BOARD_HEIGHT){
+        if(x > Commons.BOARD_WIDTH){
             die();
         }else{
             setX(x);
         }
     }
 
-    public void moveShotToUpDirection(){
+    public void moveShotToLeftDirection(){
         int x = getX() - 4;
         if(x < 0){
             die();
         }else{
             setX(x);
+        }
+    }
+
+    public void moveShotToDownDirection(){
+        int y = getY() + 4;
+        if(y > Commons.BOARD_HEIGHT){
+            die();
+        }else{
+            setY(y);
+        }
+    }
+
+    public void moveShotToUpDirection(){
+        int y = getY() - 4;
+        if(y < 0){
+            die();
+        }else{
+            setY(y);
         }
     }
 

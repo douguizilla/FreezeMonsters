@@ -201,10 +201,10 @@ public abstract class AbstractBoard extends JPanel {
         if (timer.isRunning()) {
             timer.stop();
         }
-        gameOver();
+        gameFinished();
     }
 
-    protected abstract void gameOver();
+    protected abstract void gameFinished();
 
     private class GameCycle implements ActionListener {
 

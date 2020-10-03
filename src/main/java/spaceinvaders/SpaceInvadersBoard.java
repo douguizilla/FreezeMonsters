@@ -128,7 +128,7 @@ public class SpaceInvadersBoard extends AbstractBoard {
     }
 
     @Override
-    protected void gameOver() {
+    protected void gameFinished() {
         graphicsDrawner.fillRectangle(new Rectangle(
                         0,
                         0,

@@ -15,7 +15,7 @@ public class FreezeMonsterGame extends MainFrame {
         GameBoardSpecification gameBoardSpecification = new GameBoardSpecification(
                 Commons.GROUND,
                 Commons.BOARD_WIDTH,
-                spaceinvaders.Commons.BOARD_HEIGHT,
+                Commons.BOARD_HEIGHT,
                 new Color(3, 190, 115),
                 Commons.DELAY
         );

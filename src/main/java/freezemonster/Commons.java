@@ -32,6 +32,11 @@ public interface Commons {
                                      "/freezemonsterimages/monster5.png", "/freezemonsterimages/monster6.png",
                                      "/freezemonsterimages/monster7.png", "/freezemonsterimages/monster8.png",
                                      "/freezemonsterimages/monster9.png"};
+    String[] DEAD_MONSTERS_PATH_IMAGES = {"/freezemonsterimages/monster1bg.png", "/freezemonsterimages/monster2bg.png",
+                                           "/freezemonsterimages/monster3bg.png", "/freezemonsterimages/monster4bg.png",
+                                           "/freezemonsterimages/monster5bg.png", "/freezemonsterimages/monster6bg.png",
+                                           "/freezemonsterimages/monster7bg.png", "/freezemonsterimages/monster8bg.png",
+                                           "/freezemonsterimages/monster9bg.png"};
 
     int NUMBER_OF_MONSTERS_TO_DESTROY = MONSTERS_PATH_IMAGES.length;
     int BORDER_RIGHT = 30;

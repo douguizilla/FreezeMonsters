@@ -20,7 +20,7 @@ public class MonsterSprite extends BadnessBoxSprite {
 
     public MonsterSprite(int x, int y, String imagePath, String imagePathDead) {
         initMonster(x, y);
-        setImageFromPath(imagePath);
+        setImageFromResource(imagePath, 40,40);
         this.imagePathDead = imagePathDead;
     }
 
