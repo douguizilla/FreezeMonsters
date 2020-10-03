@@ -11,6 +11,8 @@ import java.util.Random;
 import static freezemonster.Commons.getRandomNumberInRage;
 
 public class MonsterSprite extends BadnessBoxSprite {
+    private int numberOfSteps = 0;
+    private int direction;
     private final int LEFT = 1;
     private final int RIGHT = 2;
     private final int UP = 3;
@@ -63,9 +65,15 @@ public class MonsterSprite extends BadnessBoxSprite {
 
     public void moveMonster(){
         if(!isDying()){
+            numberOfSteps++;
+            if(numberOfSteps == 10 ){
+                numberOfSteps = 0;
+            }
+            if(numberOfSteps == 0){
+                direction = getRandomNumberInRage(4,1);
+            }
             boolean monsterMoved = false;
             while(monsterNeedMove(monsterMoved)){
-                int direction = getRandomNumberInRage(4,1);
                 if(direction == LEFT){
                     monsterMoved = moveMonsterToLeftDirection();
                 }else if(direction == RIGHT){
@@ -86,7 +94,7 @@ public class MonsterSprite extends BadnessBoxSprite {
     }
 
     private boolean moveMonsterToLeftDirection(){
-        int y = getY() - 4;
+        int y = getY() - 2;
         if(y < 0){
             return false;
         }
@@ -95,7 +103,7 @@ public class MonsterSprite extends BadnessBoxSprite {
     }
 
     private boolean moveMonsterToRightDirection(){
-        int y = getY() + 4;
+        int y = getY() + 2;
         if(y > Commons.BOARD_WIDTH){
             return false;
         }
@@ -104,7 +112,7 @@ public class MonsterSprite extends BadnessBoxSprite {
     }
 
     private boolean moveMonsterToUpDirection(){
-        int x = getX() - 4;
+        int x = getX() - 2;
         if(x < 0){
             return false;
         }
@@ -113,7 +121,7 @@ public class MonsterSprite extends BadnessBoxSprite {
     }
 
     private boolean moveMonsterToDownDirection(){
-        int x = getX() + 4;
+        int x = getX() + 2;
         if(x > Commons.BOARD_HEIGHT){
             return false;
         }
