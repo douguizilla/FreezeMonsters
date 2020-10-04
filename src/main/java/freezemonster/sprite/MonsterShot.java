@@ -6,6 +6,8 @@ import spriteframework.sprite.Position;
 
 import java.util.LinkedList;
 
+import static freezemonster.Commons.getRandomNumberInRage;
+
 public class MonsterShot extends BadSprite {
 
     private boolean destroyed = false;
@@ -14,6 +16,7 @@ public class MonsterShot extends BadSprite {
     private final int UP = 3;
     private final int DOWN = 4;
     private final int movementSpeed = 1;
+    private int direction = 1;
 
     public MonsterShot() {
     }
@@ -33,17 +36,25 @@ public class MonsterShot extends BadSprite {
     }
 
     public boolean monsterShotHit(Position position) {
-        if (this.getX() == position.getxPosition() && this.getY() == position.getyPosition()) {
-            die();
-            return true;
+        boolean hit = isHit(position);
+        if(!isDestroyed() && hit){
+            setDestroyed(true);
+        }else{
+            hit = false;
         }
-        return false;
+        return hit;
     }
 
-    public void shotMovement(int direction) {
+    private boolean isHit(Position position){
+        return position.getxPosition() >= (getX())
+                && position.getxPosition() <= (getX() + getImageWidth())
+                && position.getyPosition() >= (getY())
+                && position.getyPosition() <= (getY() + getImageHeight());
+    }
+
+    public void shotMovement() {
         int x;
         int y;
-
             if (shotCanMove()) {
                 if (direction == LEFT) {
                     x = getX() - movementSpeed;
@@ -58,14 +69,20 @@ public class MonsterShot extends BadSprite {
                     y = getY() + movementSpeed;
                     setY(y);
                 }
-            } else {
-                die();
+            }
+            else {
+                setDestroyed(true);
+                this.direction = getRandomNumberInRage(4,1);
             }
     }
 
     public boolean shotCanMove() {
-        return (this.getX() < Commons.BOARD_WIDTH - 40 && this.getY() < Commons.BOARD_WIDTH - 40)
-                && (this.getX() > 2 && getY() > 2);
+        if((this.getX() <= (Commons.BOARD_WIDTH - 75) && this.getY() <= (Commons.BOARD_HEIGHT - 75))
+                && (this.getX() > 2 && getY() > 2)){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     @Override

@@ -45,7 +45,6 @@ public class MonsterSprite extends BadnessBoxSprite {
 
     public boolean monsterHit(Position position){
         boolean hit = isHit(position);
-        shot.monsterShotHit(position);
         if(!isDying() && hit){
             monsterFrozen();
         }else{

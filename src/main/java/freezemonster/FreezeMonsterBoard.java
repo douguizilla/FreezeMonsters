@@ -87,8 +87,8 @@ public class FreezeMonsterBoard extends AbstractBoard {
     protected LinkedList<BadSprite> createBadSprites() {
         LinkedList<BadSprite> monsters = new LinkedList<>();
         for (int i = 0; i < Commons.MONSTERS_PATH_IMAGES.length; i++) {
-            int x = getRandomNumberInRage(Commons.BOARD_WIDTH - 80, 0);
-            int y = getRandomNumberInRage(Commons.BOARD_HEIGHT - 80, 0);
+            int x = getRandomNumberInRage(Commons.BOARD_WIDTH - 100, 0);
+            int y = getRandomNumberInRage(Commons.BOARD_HEIGHT - 100, 0);
             MonsterSprite monster = new MonsterSprite(x, y, Commons.MONSTERS_PATH_IMAGES[i], Commons.DEAD_MONSTERS_PATH_IMAGES[i]);
             monsters.add(monster);
         }
@@ -180,17 +180,11 @@ public class FreezeMonsterBoard extends AbstractBoard {
             for (BadSprite monster : badSprites) {
                 MonsterSprite monsterSprite = (MonsterSprite) monster;
                 boolean monsterHit = monsterSprite.monsterHit(shot.getPosition());
-                boolean monsterShotHit = monsterSprite.getShot().monsterShotHit(shot.getPosition());
 
                 if (monsterHit) {
                     deaths++;
                     shot.die();
                 }
-
-                if(monsterShotHit){
-                    shot.die();
-                }
-
             }
             shot.actShot(playerLastDirection);
         }
@@ -204,7 +198,13 @@ public class FreezeMonsterBoard extends AbstractBoard {
 
     protected void updateOtherSprites() {
         for (BadSprite monster : badSprites) {
-            MonsterShot monsterShot = ((MonsterSprite) monster).getShot();
+            MonsterSprite monsterSprite = (MonsterSprite) monster;
+            MonsterShot monsterShot = monsterSprite.getShot();
+            boolean monsterShotHit = monsterSprite.getShot().monsterShotHit(shot.getPosition());
+            if(monsterShotHit){
+                shot.die();
+            }
+
 
             if (monster.isVisible() && monsterShot.isDestroyed()) {
 
@@ -215,30 +215,36 @@ public class FreezeMonsterBoard extends AbstractBoard {
 
             int monsterShotX = monsterShot.getX();
             int monsterShotY = monsterShot.getY();
+            int monsterX = monsterSprite.getX();
+            int monsterY = monsterSprite.getY();
+
             int playerX = players.get(0).getX();
             int playerY = players.get(0).getY();
 
             if (players.get(0).isVisible() && !monster.isDestroyed()) {
 
-                if (monsterShotX >= (playerX)
+                if (monsterX >= (playerX)
+                        && monsterX <= (playerX + Commons.PLAYER_WIDTH)
+                        && monsterY >= (playerY)
+                        && monsterY <= (playerY + Commons.PLAYER_HEIGHT)
+                        && !monsterSprite.isDying()) {
+
+                    players.get(0).setDying(true);
+                }
+
+                if(monsterShotX >= (playerX)
                         && monsterShotX <= (playerX + Commons.PLAYER_WIDTH)
                         && monsterShotY >= (playerY)
-                        && monsterShotY <= (playerY + Commons.PLAYER_HEIGHT)) {
+                        && monsterShotY <= (playerY + Commons.PLAYER_HEIGHT)){
 
                     players.get(0).setDying(true);
                     monsterShot.setDestroyed(true);
-                }
-            }
 
-            if(!monsterShot.isVisible()){
-                monsterShotDirection = getRandomNumberInRage(4,1);
+                }
             }
 
             if (!monsterShot.isDestroyed()) {
-                monsterShot.shotMovement(monsterShotDirection);
-                if(!monsterShot.shotCanMove()){
-                    monsterShot.setDestroyed(true);
-                }
+                monsterShot.shotMovement();
             }
         }
     }

@@ -14,7 +14,6 @@ public class Player extends BasePlayer {
 
 
 
-    private Shot shot = new Shot();
     private String playerLastDirection = Commons.UP;
 
     public Player() {
