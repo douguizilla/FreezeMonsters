@@ -4,6 +4,8 @@ import freezemonster.sprite.MonsterShot;
 import freezemonster.sprite.MonsterSprite;
 import freezemonster.sprite.Player;
 import freezemonster.sprite.Shot;
+import spaceinvaders.sprite.Bomb;
+import spaceinvaders.sprite.BomberSprite;
 import spriteframework.AbstractBoard;
 import spriteframework.GameBoardSpecification;
 import spriteframework.Player.BasePlayer;
@@ -27,6 +29,7 @@ public class FreezeMonsterBoard extends AbstractBoard {
     private int direction = -1;
     private int deaths = 0;
     private String playerLastDirection = Commons.UP;
+    private int monsterShotDirection = 1;
     protected String message = "Game Over";
 
     public FreezeMonsterBoard(GameBoardSpecification gameBoardSpecification) {
@@ -177,11 +180,17 @@ public class FreezeMonsterBoard extends AbstractBoard {
             for (BadSprite monster : badSprites) {
                 MonsterSprite monsterSprite = (MonsterSprite) monster;
                 boolean monsterHit = monsterSprite.monsterHit(shot.getPosition());
+                boolean monsterShotHit = monsterSprite.getShot().monsterShotHit(shot.getPosition());
 
                 if (monsterHit) {
                     deaths++;
                     shot.die();
                 }
+
+                if(monsterShotHit){
+                    shot.die();
+                }
+
             }
             shot.actShot(playerLastDirection);
         }
@@ -190,7 +199,47 @@ public class FreezeMonsterBoard extends AbstractBoard {
             MonsterSprite monsterSprite = (MonsterSprite) monster;
             monsterSprite.moveMonster();
         }
+        updateOtherSprites();
+    }
 
+    protected void updateOtherSprites() {
+        for (BadSprite monster : badSprites) {
+            MonsterShot monsterShot = ((MonsterSprite) monster).getShot();
 
+            if (monster.isVisible() && monsterShot.isDestroyed()) {
+
+                monsterShot.setDestroyed(false);
+                monsterShot.setX(monster.getX());
+                monsterShot.setY(monster.getY());
+            }
+
+            int monsterShotX = monsterShot.getX();
+            int monsterShotY = monsterShot.getY();
+            int playerX = players.get(0).getX();
+            int playerY = players.get(0).getY();
+
+            if (players.get(0).isVisible() && !monster.isDestroyed()) {
+
+                if (monsterShotX >= (playerX)
+                        && monsterShotX <= (playerX + Commons.PLAYER_WIDTH)
+                        && monsterShotY >= (playerY)
+                        && monsterShotY <= (playerY + Commons.PLAYER_HEIGHT)) {
+
+                    players.get(0).setDying(true);
+                    monsterShot.setDestroyed(true);
+                }
+            }
+
+            if(!monsterShot.isVisible()){
+                monsterShotDirection = getRandomNumberInRage(4,1);
+            }
+
+            if (!monsterShot.isDestroyed()) {
+                monsterShot.shotMovement(monsterShotDirection);
+                if(!monsterShot.shotCanMove()){
+                    monsterShot.setDestroyed(true);
+                }
+            }
+        }
     }
 }

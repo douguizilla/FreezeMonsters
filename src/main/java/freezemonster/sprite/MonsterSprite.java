@@ -10,12 +10,12 @@ import java.util.LinkedList;
 import static freezemonster.Commons.getRandomNumberInRage;
 
 public class MonsterSprite extends BadnessBoxSprite {
-    private int numberOfSteps = 0;
-    private int direction;
     private final int LEFT = 1;
     private final int RIGHT = 2;
     private final int UP = 3;
     private final int DOWN = 4;
+    private int numberOfSteps = 0;
+    private int direction = LEFT ;
     private MonsterShot shot;
     private String imagePathDead;
     private final int LIMIT_MOVEMENT = 80;
@@ -136,5 +136,9 @@ public class MonsterSprite extends BadnessBoxSprite {
         }
         setX(x);
         return true;
+    }
+
+    public int getDirection() {
+        return direction;
     }
 }
