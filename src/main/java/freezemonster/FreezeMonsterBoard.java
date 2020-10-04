@@ -85,7 +85,7 @@ public class FreezeMonsterBoard extends AbstractBoard {
 
     @Override
     protected LinkedList<BadSprite> createBadSprites() {
-        LinkedList<BadSprite> monsters = new LinkedList<>();
+        monsters = new LinkedList<>();
         for (int i = 0; i < Commons.MONSTERS_PATH_IMAGES.length; i++) {
             int x = getRandomNumberInRage(Commons.BOARD_WIDTH - 100, 0);
             int y = getRandomNumberInRage(Commons.BOARD_HEIGHT - 100, 0);
@@ -200,17 +200,18 @@ public class FreezeMonsterBoard extends AbstractBoard {
         for (BadSprite monster : badSprites) {
             MonsterSprite monsterSprite = (MonsterSprite) monster;
             MonsterShot monsterShot = monsterSprite.getShot();
+
             boolean monsterShotHit = monsterSprite.getShot().monsterShotHit(shot.getPosition());
+
             if(monsterShotHit){
                 shot.die();
             }
 
-
-            if (monster.isVisible() && monsterShot.isDestroyed()) {
+            if (!monsterSprite.isDying() && monsterShot.isDestroyed()) {
 
                 monsterShot.setDestroyed(false);
-                monsterShot.setX(monster.getX());
-                monsterShot.setY(monster.getY());
+                monsterShot.setX(monsterSprite.getX());
+                monsterShot.setY(monsterSprite.getY());
             }
 
             int monsterShotX = monsterShot.getX();
@@ -221,7 +222,7 @@ public class FreezeMonsterBoard extends AbstractBoard {
             int playerX = players.get(0).getX();
             int playerY = players.get(0).getY();
 
-            if (players.get(0).isVisible() && !monster.isDestroyed()) {
+            if (players.get(0).isVisible()) {
 
                 if (monsterX >= (playerX)
                         && monsterX <= (playerX + Commons.PLAYER_WIDTH)
@@ -235,7 +236,8 @@ public class FreezeMonsterBoard extends AbstractBoard {
                 if(monsterShotX >= (playerX)
                         && monsterShotX <= (playerX + Commons.PLAYER_WIDTH)
                         && monsterShotY >= (playerY)
-                        && monsterShotY <= (playerY + Commons.PLAYER_HEIGHT)){
+                        && monsterShotY <= (playerY + Commons.PLAYER_HEIGHT)
+                        && !monsterShot.isDestroyed()){
 
                     players.get(0).setDying(true);
                     monsterShot.setDestroyed(true);

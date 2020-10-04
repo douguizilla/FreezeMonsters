@@ -62,6 +62,9 @@ public class MonsterSprite extends BadnessBoxSprite {
 
     private void monsterFrozen(){
         setImageFromResource(imagePathDead,40,40);
+        if(shot.isDestroyed()){
+            shot.die();
+        }
         setDying(true);
     }
 
