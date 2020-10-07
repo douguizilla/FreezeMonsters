@@ -60,7 +60,7 @@ public class MonsterShot extends BadSprite {
             } else {
                 setX(2);
                 setDestroyed(true);
-                this.direction = getRandomNumberInRage(4, 1);
+                this.direction = findNewDirection(direction);
             }
 
         } else if (direction == RIGHT) {
@@ -70,7 +70,7 @@ public class MonsterShot extends BadSprite {
             } else {
                 setX(Commons.BOARD_WIDTH - Commons.SHOT_SIZE);
                 setDestroyed(true);
-                this.direction = getRandomNumberInRage(4, 1);
+                this.direction = findNewDirection(direction);
             }
 
         } else if (direction == UP) {
@@ -80,7 +80,7 @@ public class MonsterShot extends BadSprite {
             } else {
                 setY(2);
                 setDestroyed(true);
-                this.direction = getRandomNumberInRage(4, 1);
+                this.direction = findNewDirection(direction);
             }
 
         } else if (direction == DOWN) {
@@ -90,9 +90,19 @@ public class MonsterShot extends BadSprite {
             } else {
                 setY(Commons.BOARD_HEIGHT - Commons.SHOT_SIZE);
                 setDestroyed(true);
-                this.direction = getRandomNumberInRage(4, 1);
+                this.direction = findNewDirection(direction);
             }
         }
+    }
+
+    private int findNewDirection(int direction){
+        int newDirection = getRandomNumberInRage(4, 1);
+
+        while(newDirection == direction){
+            newDirection = getRandomNumberInRage(4, 1);
+        }
+
+        return newDirection;
     }
 
     @Override
