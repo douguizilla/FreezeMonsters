@@ -16,7 +16,7 @@ public class MonsterShot extends BadSprite {
     private final int UP = 3;
     private final int DOWN = 4;
     private final int movementSpeed = 3;
-    private int direction = 1;
+    private int direction = getRandomNumberInRage(4,1);
 
     public MonsterShot(int x, int y) {
         initShot(x, y);
@@ -52,7 +52,6 @@ public class MonsterShot extends BadSprite {
     public void shotMovement() {
         int x;
         int y;
-
         if (direction == LEFT) {
             x = getX() - movementSpeed;
             if (x > 2) {
