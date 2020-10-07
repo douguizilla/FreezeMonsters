@@ -18,15 +18,12 @@ public class MonsterShot extends BadSprite {
     private final int movementSpeed = 1;
     private int direction = 1;
 
-    public MonsterShot() {
-    }
-
     public MonsterShot(int x, int y) {
         initShot(x, y);
     }
 
     private void initShot(int x, int y) {
-        setImageFromResource(Commons.MONSTER_SHOT_IMAGE_PATH, 25, 25);
+        setImageFromResource(Commons.MONSTER_SHOT_IMAGE_PATH, Commons.SHOT_SIZE, Commons.SHOT_SIZE);
 
         int H_SPACE = 6;
         setX(x + H_SPACE);

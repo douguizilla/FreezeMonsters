@@ -18,7 +18,7 @@ public class Shot extends BadSprite {
 
     private void initShot(int x, int y) {
 
-        setImageFromResource(RAY_IMAGE_PATH, 25, 25);
+        setImageFromResource(RAY_IMAGE_PATH, SHOT_SIZE, SHOT_SIZE);
 
          int H_SPACE = 6;
         setX(x + H_SPACE);

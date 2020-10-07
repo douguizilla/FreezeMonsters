@@ -29,7 +29,7 @@ public class MonsterSprite extends BadnessBoxSprite {
     private void initMonster(int x, int y) {
         this.setX(x);
         this.setY(y);
-        shot = new MonsterShot(x, y);
+        shot = new MonsterShot(x,y);
     }
 
     public MonsterShot getShot() {
@@ -154,9 +154,5 @@ public class MonsterSprite extends BadnessBoxSprite {
         }
         setX(x);
         return true;
-    }
-
-    public int getDirection() {
-        return direction;
     }
 }
