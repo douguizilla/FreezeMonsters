@@ -15,7 +15,7 @@ public class MonsterShot extends BadSprite {
     private final int RIGHT = 2;
     private final int UP = 3;
     private final int DOWN = 4;
-    private final int movementSpeed = 1;
+    private final int movementSpeed = 3;
     private int direction = 1;
 
     public MonsterShot(int x, int y) {
@@ -34,15 +34,15 @@ public class MonsterShot extends BadSprite {
 
     public boolean shotWasHit(Position position) {
         boolean hit = isHit(position);
-        if(!isDestroyed() && hit){
+        if (!isDestroyed() && hit) {
             setDestroyed(true);
-        }else{
+        } else {
             hit = false;
         }
         return hit;
     }
 
-    private boolean isHit(Position position){
+    private boolean isHit(Position position) {
         return position.getxPosition() >= (getX())
                 && position.getxPosition() <= (getX() + getImageWidth())
                 && position.getyPosition() >= (getY())
@@ -52,33 +52,46 @@ public class MonsterShot extends BadSprite {
     public void shotMovement() {
         int x;
         int y;
-            if (shotCanMove()) {
-                if (direction == LEFT) {
-                    x = getX() - movementSpeed;
-                    setX(x);
-                } else if (direction == RIGHT) {
-                    x = getY() - movementSpeed;
-                    setX(x);
-                } else if (direction == UP) {
-                    y = getY() - movementSpeed;
-                    setY(y);
-                } else if (direction == DOWN) {
-                    y = getY() + movementSpeed;
-                    setY(y);
-                }
-            }
-            else {
-                setDestroyed(true);
-                this.direction = getRandomNumberInRage(4,1);
-            }
-    }
 
-    public boolean shotCanMove() {
-        if((this.getX() <= (Commons.BOARD_WIDTH - 75) && this.getY() <= (Commons.BOARD_HEIGHT - 75))
-                && (this.getX() > 2 && getY() > 2)){
-            return true;
-        }else{
-            return false;
+        if (direction == LEFT) {
+            x = getX() - movementSpeed;
+            if (x > 2) {
+                setX(x);
+            } else {
+                setX(2);
+                setDestroyed(true);
+                this.direction = getRandomNumberInRage(4, 1);
+            }
+
+        } else if (direction == RIGHT) {
+            x = getX() + movementSpeed;
+            if (x <= Commons.BOARD_WIDTH - Commons.SHOT_SIZE) {
+                setX(x);
+            } else {
+                setX(Commons.BOARD_WIDTH - Commons.SHOT_SIZE);
+                setDestroyed(true);
+                this.direction = getRandomNumberInRage(4, 1);
+            }
+
+        } else if (direction == UP) {
+            y = getY() - movementSpeed;
+            if (y > 2) {
+                setY(y);
+            } else {
+                setY(2);
+                setDestroyed(true);
+                this.direction = getRandomNumberInRage(4, 1);
+            }
+
+        } else if (direction == DOWN) {
+            y = getY() + movementSpeed;
+            if (y <= Commons.BOARD_HEIGHT - Commons.SHOT_SIZE) {
+                setY(y);
+            } else {
+                setY(Commons.BOARD_HEIGHT - Commons.SHOT_SIZE);
+                setDestroyed(true);
+                this.direction = getRandomNumberInRage(4, 1);
+            }
         }
     }
 
