@@ -36,11 +36,27 @@ public class MonsterSprite extends BadnessBoxSprite {
         return shot;
     }
 
+    public boolean shotWasHit(Position position){
+        return shot.shotWasHit(position);
+    }
+
     @Override
     public LinkedList<BadSprite> getBadnesses() {
         LinkedList<BadSprite> aMonsterShot = new LinkedList<BadSprite>();
         aMonsterShot.add(shot);
         return aMonsterShot;
+    }
+
+    public void createShot(){
+        if (shotCanBeCreated()) {
+            shot.setDestroyed(false);
+            shot.setX(getX());
+            shot.setY(getY());
+        }
+    }
+
+    private boolean shotCanBeCreated(){
+        return !isDying() && shot.isDestroyed();
     }
 
     public boolean monsterHit(Position position){

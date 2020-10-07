@@ -2,6 +2,7 @@ package freezemonster.sprite;
 
 import freezemonster.Commons;
 import spriteframework.sprite.BadSprite;
+import spriteframework.sprite.Position;
 
 import static freezemonster.Commons.*;
 
@@ -11,8 +12,8 @@ public class Shot extends BadSprite {
     public Shot() {
     }
 
-    public Shot(int x, int y) {
-        initShot(x, y);
+    public Shot(Position position) {
+        initShot(position.getxPosition(), position.getyPosition());
     }
 
     private void initShot(int x, int y) {

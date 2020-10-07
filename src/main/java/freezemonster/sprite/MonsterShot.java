@@ -35,7 +35,7 @@ public class MonsterShot extends BadSprite {
         setY(y - V_SPACE);
     }
 
-    public boolean monsterShotHit(Position position) {
+    public boolean shotWasHit(Position position) {
         boolean hit = isHit(position);
         if(!isDestroyed() && hit){
             setDestroyed(true);
