@@ -20,8 +20,8 @@ public class MonsterSprite extends BadnessBoxSprite {
     private String imagePathDead;
     private final int LIMIT_MOVEMENT = 80;
 
-    public MonsterSprite(int x, int y, String imagePath, String imagePathDead) {
-        initMonster(x, y);
+    public MonsterSprite(Position position, String imagePath, String imagePathDead) {
+        initMonster(position.getxPosition(), position.getxPosition());
         setImageFromResource(imagePath, 40,40);
         this.imagePathDead = imagePathDead;
     }
@@ -30,14 +30,6 @@ public class MonsterSprite extends BadnessBoxSprite {
         this.setX(x);
         this.setY(y);
         shot = new MonsterShot(x,y);
-    }
-
-    public MonsterShot getShot() {
-        return shot;
-    }
-
-    public boolean shotWasHit(Position position){
-        return shot.shotWasHit(position);
     }
 
     @Override
@@ -154,5 +146,13 @@ public class MonsterSprite extends BadnessBoxSprite {
         }
         setX(x);
         return true;
+    }
+
+    public MonsterShot getShot() {
+        return shot;
+    }
+
+    public boolean shotWasHit(Position position){
+        return shot.shotWasHit(position);
     }
 }

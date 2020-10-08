@@ -103,11 +103,10 @@ public class FreezeMonsterBoard extends AbstractBoard {
     }
 
     private BadSprite createMonster(int position) {
-        int x = getRandomNumberInRage(Commons.BOARD_WIDTH - 100, 0);
-        int y = getRandomNumberInRage(Commons.BOARD_HEIGHT - 100, 0);
+        int x = getRandomNumberInRage(Commons.BOARD_WIDTH - 200, 0);
+        int y = getRandomNumberInRage(Commons.BOARD_HEIGHT - 200, 0);
         MonsterSprite monster = new MonsterSprite(
-                x,
-                y,
+                new Position(x,y),
                 Commons.MONSTERS_PATH_IMAGES[position],
                 Commons.DEAD_MONSTERS_PATH_IMAGES[position]
         );

@@ -100,7 +100,6 @@ public class MonsterShot extends BadSprite {
         while(newDirection == direction){
             newDirection = getRandomNumberInRage(4, 1);
         }
-
         return newDirection;
     }
 

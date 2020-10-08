@@ -1,9 +1,5 @@
 package freezemonster;
 
-
-import spriteframework.sprite.Position;
-import spriteframework.sprite.Sprite;
-
 import java.util.Random;
 
 public interface Commons {

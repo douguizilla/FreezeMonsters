@@ -27,6 +27,19 @@ public class Shot extends BadSprite {
         setY(y - V_SPACE);
     }
 
+    public void actShot(String playerLastDirection) {
+        if(isVisible()) {
+            if (playerLastDirection.equals(LEFT)) {
+                this.moveShotToLeftDirection();
+            } else if (playerLastDirection.equals(RIGHT)) {
+                this.moveShotToRightDirection();
+            } else if (playerLastDirection.equals(DOWN)) {
+                this.moveShotToDownDirection();
+            } else if (playerLastDirection.equals(UP)) {
+                this.moveShotToUpDirection();
+            }
+        }
+    }
 
     public void moveShotToRightDirection(){
         int x = getX() + 4;
@@ -61,20 +74,6 @@ public class Shot extends BadSprite {
             die();
         }else{
             setY(y);
-        }
-    }
-
-    public void actShot(String playerLastDirection) {
-        if(isVisible()) {
-            if (playerLastDirection.equals(LEFT)) {
-                this.moveShotToLeftDirection();
-            } else if (playerLastDirection.equals(RIGHT)) {
-                this.moveShotToRightDirection();
-            } else if (playerLastDirection.equals(DOWN)) {
-                this.moveShotToDownDirection();
-            } else if (playerLastDirection.equals(UP)) {
-                this.moveShotToUpDirection();
-            }
         }
     }
 }

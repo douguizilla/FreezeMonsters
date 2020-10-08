@@ -30,14 +30,14 @@ public abstract class AbstractBoard extends JPanel {
     private OtherSpriteListener otherSpriteListener;
     private GameBoardSpecification gameBoardSpecification;
     private TAdapter tAdapter = new TAdapter();
-    private boolean showSpriteDead = false;
+    private boolean showDeadSprite = false;
 
     public AbstractBoard(GameBoardSpecification gameBoardSpecification) {
         initBoard(gameBoardSpecification);
     }
 
-    public AbstractBoard(GameBoardSpecification gameBoardSpecification, boolean showSpriteDead) {
-        this.showSpriteDead = showSpriteDead;
+    public AbstractBoard(GameBoardSpecification gameBoardSpecification, boolean showDeadSprite) {
+        this.showDeadSprite = showDeadSprite;
         initBoard(gameBoardSpecification);
     }
 
@@ -126,7 +126,7 @@ public abstract class AbstractBoard extends JPanel {
 
     private void drawBadSprite(BadSprite bad) {
         drawSpriteIfIsVisible(bad);
-        if (!showSpriteDead) {
+        if (!showDeadSprite) {
             setBadSpriteDeadIfIsDying(bad);
         }
     }
@@ -150,7 +150,7 @@ public abstract class AbstractBoard extends JPanel {
     private void badnessBoxSpriteTreatment(BadnessBoxSprite badnessBoxSprite) {
         if (badnessBoxSpriteBadnessIsNotNull(badnessBoxSprite)) {
             for (BadSprite badness : badnessBoxSprite.getBadnesses()) {
-                drawBadnessIfNotDestroyed(badness, graphics);
+                drawBadnessIfNotDestroyed(badness);
             }
         }
     }
@@ -159,7 +159,7 @@ public abstract class AbstractBoard extends JPanel {
         return badnessBoxSprite.getBadnesses() != null;
     }
 
-    private void drawBadnessIfNotDestroyed(BadSprite badness, Graphics graphics) {
+    private void drawBadnessIfNotDestroyed(BadSprite badness) {
         if (badnessIsNotDestroyed(badness)) {
             drawSprite(badness);
         }

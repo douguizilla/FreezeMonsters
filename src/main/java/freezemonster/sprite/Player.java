@@ -12,8 +12,6 @@ import static freezemonster.Commons.LEFT;
 
 public class Player extends BasePlayer {
 
-
-
     private String playerLastDirection = Commons.UP;
 
     public Player() {
@@ -61,6 +59,10 @@ public class Player extends BasePlayer {
         super.update();
         if (getX() <= 2) {
             setX(2);
+        }
+
+        if(getY() <= 2){
+            setY(2);
         }
 
         int rightLimit = 45;
